@@ -1,0 +1,424 @@
+{
+  "seed": 6836372,
+  "controls": {
+    "raw_claims": 4812,
+    "production_claims": 4800,
+    "quarantined_claims": 12,
+    "raw_numeric_thb": 38545494.32,
+    "production_thb": 38484035.58,
+    "quarantine_numeric_thb": 61458.74,
+    "unparseable_amount_rows": 1,
+    "row_difference": 0,
+    "amount_difference_thb": 0.0,
+    "master_counts": {
+      "employees": 120,
+      "merchants": 36,
+      "trips": 4800,
+      "approvals": 4800
+    },
+    "source_hashes": {
+      "approvals.csv": "6056d89dd989dd9148905bbaee4f3792352b8d98efea9cb99d5ca9cd0c5239db",
+      "employees.csv": "e3b4025678fa67fba637fbe9cbad4c93953d8ef8b92724362758cbc225959063",
+      "expense_claims.csv": "66a240e21f7c8b93cfd9f0d71cb08b67eb6fe53075d495d2aa940e38548ae986",
+      "merchants.csv": "98019773e9c4d721da084ceac04d0dac9014c4d5cfc547d44259f03f966504a0",
+      "trips.csv": "9136b5efa507a6e6ca9f0faf3b466f69d1396a1b71ea9f948cce211b6d84900f"
+    }
+  },
+  "champion": "Random Forest",
+  "thresholds": {
+    "Logistic regression": 0.71,
+    "Random Forest": 0.76
+  },
+  "metrics": [
+    {
+      "model": "Logistic regression",
+      "split": "train",
+      "threshold": 0.71,
+      "n": 2400,
+      "positives": 176,
+      "tp": 154,
+      "fp": 99,
+      "fn": 22,
+      "tn": 2125,
+      "alerts": 253,
+      "precision": 0.6086956521739131,
+      "recall": 0.875,
+      "f1": 0.717948717948718,
+      "average_precision": 0.7522566821818317,
+      "roc_auc": 0.9683233526814912
+    },
+    {
+      "model": "Logistic regression",
+      "split": "validation",
+      "threshold": 0.71,
+      "n": 800,
+      "positives": 61,
+      "tp": 48,
+      "fp": 27,
+      "fn": 13,
+      "tn": 712,
+      "alerts": 75,
+      "precision": 0.64,
+      "recall": 0.7868852459016393,
+      "f1": 0.7058823529411765,
+      "average_precision": 0.625445586142071,
+      "roc_auc": 0.9624880764879433
+    },
+    {
+      "model": "Logistic regression",
+      "split": "test",
+      "threshold": 0.71,
+      "n": 800,
+      "positives": 60,
+      "tp": 48,
+      "fp": 21,
+      "fn": 12,
+      "tn": 719,
+      "alerts": 69,
+      "precision": 0.6956521739130435,
+      "recall": 0.8,
+      "f1": 0.7441860465116279,
+      "average_precision": 0.7471069185976787,
+      "roc_auc": 0.9422297297297298
+    },
+    {
+      "model": "Logistic regression",
+      "split": "out_of_time",
+      "threshold": 0.71,
+      "n": 800,
+      "positives": 60,
+      "tp": 43,
+      "fp": 25,
+      "fn": 17,
+      "tn": 715,
+      "alerts": 68,
+      "precision": 0.6323529411764706,
+      "recall": 0.7166666666666667,
+      "f1": 0.671875,
+      "average_precision": 0.6966721100086011,
+      "roc_auc": 0.9498873873873874
+    },
+    {
+      "model": "Random Forest",
+      "split": "train",
+      "threshold": 0.76,
+      "n": 2400,
+      "positives": 176,
+      "tp": 145,
+      "fp": 15,
+      "fn": 31,
+      "tn": 2209,
+      "alerts": 160,
+      "precision": 0.90625,
+      "recall": 0.8238636363636364,
+      "f1": 0.8630952380952381,
+      "average_precision": 0.954481786086366,
+      "roc_auc": 0.9962368173642904
+    },
+    {
+      "model": "Random Forest",
+      "split": "validation",
+      "threshold": 0.76,
+      "n": 800,
+      "positives": 61,
+      "tp": 48,
+      "fp": 8,
+      "fn": 13,
+      "tn": 731,
+      "alerts": 56,
+      "precision": 0.8571428571428571,
+      "recall": 0.7868852459016393,
+      "f1": 0.8205128205128205,
+      "average_precision": 0.8653818120723331,
+      "roc_auc": 0.9758867765478383
+    },
+    {
+      "model": "Random Forest",
+      "split": "test",
+      "threshold": 0.76,
+      "n": 800,
+      "positives": 60,
+      "tp": 44,
+      "fp": 12,
+      "fn": 16,
+      "tn": 728,
+      "alerts": 56,
+      "precision": 0.7857142857142857,
+      "recall": 0.7333333333333333,
+      "f1": 0.7586206896551724,
+      "average_precision": 0.8064549106632963,
+      "roc_auc": 0.9683108108108107
+    },
+    {
+      "model": "Random Forest",
+      "split": "out_of_time",
+      "threshold": 0.76,
+      "n": 800,
+      "positives": 60,
+      "tp": 35,
+      "fp": 9,
+      "fn": 25,
+      "tn": 731,
+      "alerts": 44,
+      "precision": 0.7954545454545454,
+      "recall": 0.5833333333333334,
+      "f1": 0.6730769230769231,
+      "average_precision": 0.697418977930264,
+      "roc_auc": 0.9505518018018018
+    },
+    {
+      "model": "Existing rules",
+      "split": "train",
+      "threshold": null,
+      "n": 2400,
+      "positives": 176,
+      "tp": 91,
+      "fp": 134,
+      "fn": 85,
+      "tn": 2090,
+      "alerts": 225,
+      "precision": 0.40444444444444444,
+      "recall": 0.5170454545454546,
+      "f1": 0.4538653366583541
+    },
+    {
+      "model": "Existing rules",
+      "split": "validation",
+      "threshold": null,
+      "n": 800,
+      "positives": 61,
+      "tp": 21,
+      "fp": 35,
+      "fn": 40,
+      "tn": 704,
+      "alerts": 56,
+      "precision": 0.375,
+      "recall": 0.3442622950819672,
+      "f1": 0.358974358974359
+    },
+    {
+      "model": "Existing rules",
+      "split": "test",
+      "threshold": null,
+      "n": 800,
+      "positives": 60,
+      "tp": 24,
+      "fp": 35,
+      "fn": 36,
+      "tn": 705,
+      "alerts": 59,
+      "precision": 0.4067796610169492,
+      "recall": 0.4,
+      "f1": 0.40336134453781514
+    },
+    {
+      "model": "Existing rules",
+      "split": "out_of_time",
+      "threshold": null,
+      "n": 800,
+      "positives": 60,
+      "tp": 27,
+      "fp": 41,
+      "fn": 33,
+      "tn": 699,
+      "alerts": 68,
+      "precision": 0.39705882352941174,
+      "recall": 0.45,
+      "f1": 0.421875
+    }
+  ],
+  "split_counts": {
+    "out_of_time": {
+      "size": 800,
+      "sum": 60
+    },
+    "test": {
+      "size": 800,
+      "sum": 60
+    },
+    "train": {
+      "size": 2400,
+      "sum": 176
+    },
+    "validation": {
+      "size": 800,
+      "sum": 61
+    }
+  },
+  "scheme_counts": {
+    "approval_abuse": 71,
+    "coordinated_merchant": 91,
+    "duplicate_reimbursement": 66,
+    "inflated_hotel": 129,
+    "legitimate": 4443
+  },
+  "association_rules": [
+    {
+      "antecedents": "Approver=E004 & Employee=E037",
+      "consequent": "Merchant=V032",
+      "train_support": 0.004166666666666667,
+      "train_confidence": 0.625,
+      "train_lift": 68.18181818181819,
+      "train_count": 10,
+      "discovery_n": 2400,
+      "test_count": 4,
+      "test_antecedent_n": 6,
+      "test_support": 0.005,
+      "test_confidence": 0.6666666666666666,
+      "out_of_time_count": 3,
+      "out_of_time_antecedent_n": 4,
+      "out_of_time_support": 0.00375,
+      "out_of_time_confidence": 0.75
+    },
+    {
+      "antecedents": "Approver=E004 & Employee=E065",
+      "consequent": "Merchant=V031",
+      "train_support": 0.004166666666666667,
+      "train_confidence": 0.5882352941176471,
+      "train_lift": 58.82352941176471,
+      "train_count": 10,
+      "discovery_n": 2400,
+      "test_count": 2,
+      "test_antecedent_n": 5,
+      "test_support": 0.0025,
+      "test_confidence": 0.4,
+      "out_of_time_count": 3,
+      "out_of_time_antecedent_n": 5,
+      "out_of_time_support": 0.00375,
+      "out_of_time_confidence": 0.6
+    },
+    {
+      "antecedents": "Employee=E020",
+      "consequent": "Merchant=V036",
+      "train_support": 0.015833333333333335,
+      "train_confidence": 0.6031746031746033,
+      "train_lift": 38.095238095238095,
+      "train_count": 38,
+      "discovery_n": 2400,
+      "test_count": 16,
+      "test_antecedent_n": 22,
+      "test_support": 0.02,
+      "test_confidence": 0.7272727272727273,
+      "out_of_time_count": 12,
+      "out_of_time_antecedent_n": 17,
+      "out_of_time_support": 0.015,
+      "out_of_time_confidence": 0.7058823529411765
+    },
+    {
+      "antecedents": "Employee=E065",
+      "consequent": "Merchant=V031",
+      "train_support": 0.004583333333333333,
+      "train_confidence": 0.3333333333333333,
+      "train_lift": 33.33333333333333,
+      "train_count": 11,
+      "discovery_n": 2400,
+      "test_count": 2,
+      "test_antecedent_n": 11,
+      "test_support": 0.0025,
+      "test_confidence": 0.18181818181818182,
+      "out_of_time_count": 4,
+      "out_of_time_antecedent_n": 11,
+      "out_of_time_support": 0.005,
+      "out_of_time_confidence": 0.36363636363636365
+    },
+    {
+      "antecedents": "Employee=E037",
+      "consequent": "Merchant=V032",
+      "train_support": 0.004583333333333333,
+      "train_confidence": 0.28947368421052627,
+      "train_lift": 31.578947368421048,
+      "train_count": 11,
+      "discovery_n": 2400,
+      "test_count": 5,
+      "test_antecedent_n": 13,
+      "test_support": 0.00625,
+      "test_confidence": 0.38461538461538464,
+      "out_of_time_count": 3,
+      "out_of_time_antecedent_n": 12,
+      "out_of_time_support": 0.00375,
+      "out_of_time_confidence": 0.25
+    }
+  ],
+  "association_rule_count": 5,
+  "validation_checks": 15,
+  "total_synthetic_fraud_claims": 357,
+  "graph_analysis": {
+    "method": "Training-only employee\u2013merchant affiliation graph",
+    "networkx_version": "3.6.1",
+    "input_columns": [
+      "claim_id",
+      "employee_id",
+      "merchant_id",
+      "approver_id",
+      "amount_thb",
+      "submitted_at",
+      "split"
+    ],
+    "training_claims": 2400,
+    "employees": 114,
+    "merchants": 33,
+    "nodes": 147,
+    "edges": 1703,
+    "components": 1,
+    "bipartite_density": 0.45268474215842636,
+    "community_count": 9,
+    "weighted_modularity": 0.17095590277777778,
+    "centrality": "Exact normalized unweighted shortest-path betweenness on all observed training nodes.",
+    "community_method": "Greedy modularity on claim-count weights, resolution 1. Descriptive partition of a bipartite graph.",
+    "focus_selection": "Merchants in qualifying training FP-Growth rules; display employee\u2013merchant edges with at least 3 training claims.",
+    "focus_nodes": 7,
+    "focus_edges": 7,
+    "focus_shared_merchant_paths": 6,
+    "focus_merchants": [
+      "V031",
+      "V032",
+      "V036"
+    ],
+    "training_source_sha256": "84fa3f5d9fb324d45e1295e3ed22e8735102bbccdbf8b4a735ac238552edd1ef",
+    "no_predictive_graph_claim": "No graph-derived fraud score, label propagation, link prediction, ownership or funds-flow inference. Existing classifiers unchanged.",
+    "checks": [
+      {
+        "check": "Training snapshot has 2400 claims",
+        "passed": true
+      },
+      {
+        "check": "Graph sources exclude labels and scores",
+        "passed": true
+      },
+      {
+        "check": "Graph is bipartite",
+        "passed": true
+      },
+      {
+        "check": "Each source claim belongs to one graph edge",
+        "passed": true
+      },
+      {
+        "check": "Graph amounts reconcile to training claims",
+        "passed": true
+      },
+      {
+        "check": "Communities partition observed nodes",
+        "passed": true
+      },
+      {
+        "check": "Focus selection has source edges",
+        "passed": true
+      },
+      {
+        "check": "Every two-hop path uses observed links",
+        "passed": true
+      }
+    ]
+  },
+  "training_profile": {
+    "training_hotel_claims": 1294,
+    "median_price_ratio": 1.0591502976190477,
+    "q1": 0.8614780753968254,
+    "q3": 1.3144735221674877,
+    "mad": 0.2250322660098522,
+    "robust_z_over_3_5": 39,
+    "interpretation": "Descriptive training-only peer and monthly comparisons. Robust scores are contextual leads, not p-values or fraud labels. No formal significance test or Benford claim."
+  },
+  "note": "All results describe synthetic classroom data; Peer review is outside the scope of this public portfolio release."
+}

@@ -1,0 +1,9 @@
+{
+  "training_hotel_claims": 1294,
+  "median_price_ratio": 1.0591502976190477,
+  "q1": 0.8614780753968254,
+  "q3": 1.3144735221674877,
+  "mad": 0.2250322660098522,
+  "robust_z_over_3_5": 39,
+  "interpretation": "Descriptive training-only peer and monthly comparisons. Robust scores are contextual leads, not p-values or fraud labels. No formal significance test or Benford claim."
+}

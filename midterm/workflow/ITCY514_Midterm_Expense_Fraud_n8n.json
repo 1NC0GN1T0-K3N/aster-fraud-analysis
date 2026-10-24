@@ -1,0 +1,612 @@
+{
+  "name": "ITCY514 Midterm - Travel Expense Fraud Analytics",
+  "nodes": [
+    {
+      "id": "midterm-node-01",
+      "name": "Landing Zone",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -900,
+        -380
+      ],
+      "parameters": {
+        "content": "## Landing Zone\n### Upload the three raw CSV files without changing them",
+        "height": 680,
+        "width": 610,
+        "color": 4
+      }
+    },
+    {
+      "id": "midterm-node-02",
+      "name": "Staging Zone",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -250,
+        -380
+      ],
+      "parameters": {
+        "content": "## Staging Zone\n### Preserve raw text, source file, row ID, and ingestion time",
+        "height": 680,
+        "width": 420,
+        "color": 3
+      }
+    },
+    {
+      "id": "midterm-node-03",
+      "name": "Production Zone",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        210,
+        -380
+      ],
+      "parameters": {
+        "content": "## Production Zone\n### Validate, quarantine, type fields, hash records, and analyze",
+        "height": 1100,
+        "width": 1700,
+        "color": 5
+      }
+    },
+    {
+      "id": "midterm-node-04",
+      "name": "Setup Database",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1150,
+        -250
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "midterm-node-05",
+      "name": "Create Midterm Schema",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        -1150,
+        -120
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "DROP SCHEMA IF EXISTS midterm_expense CASCADE;\nCREATE SCHEMA midterm_expense;\nCREATE TABLE midterm_expense.staging_employees (raw_row_id BIGSERIAL PRIMARY KEY, emp_id TEXT, emp_name TEXT, department TEXT, role TEXT, bank_account TEXT, address TEXT, approval_limit_thb TEXT, active_flag TEXT, source_file TEXT DEFAULT 'employees.csv', ingested_at TIMESTAMPTZ DEFAULT NOW());\nCREATE TABLE midterm_expense.staging_vendors (raw_row_id BIGSERIAL PRIMARY KEY, vendor_id TEXT, vendor_name TEXT, category TEXT, owner_name TEXT, bank_account TEXT, address TEXT, registration_date TEXT, risk_country TEXT, active_flag TEXT, source_file TEXT DEFAULT 'vendors.csv', ingested_at TIMESTAMPTZ DEFAULT NOW());\nCREATE TABLE midterm_expense.staging_invoices (raw_row_id BIGSERIAL PRIMARY KEY, invoice_id TEXT, invoice_number TEXT, vendor_id TEXT, employee_id TEXT, approver_id TEXT, invoice_date TEXT, amount_thb TEXT, description TEXT, po_id TEXT, payment_method TEXT, currency TEXT, source_file TEXT DEFAULT 'invoices.csv', ingested_at TIMESTAMPTZ DEFAULT NOW());\nCREATE TABLE midterm_expense.production_employees (LIKE midterm_expense.staging_employees INCLUDING DEFAULTS, approval_limit_numeric NUMERIC(14,2), row_hash TEXT, load_batch_id TEXT);\nCREATE TABLE midterm_expense.production_vendors (LIKE midterm_expense.staging_vendors INCLUDING DEFAULTS, registration_date_typed DATE, row_hash TEXT, load_batch_id TEXT);\nCREATE TABLE midterm_expense.production_invoices (raw_row_id BIGINT, invoice_id TEXT PRIMARY KEY, invoice_number TEXT, vendor_id TEXT, employee_id TEXT, approver_id TEXT, invoice_date DATE, amount_thb NUMERIC(14,2), description TEXT, po_id TEXT, payment_method TEXT, currency TEXT, source_file TEXT, ingested_at TIMESTAMPTZ, row_hash TEXT, load_batch_id TEXT);\nCREATE TABLE midterm_expense.quarantine (source_table TEXT, row_key TEXT, reason TEXT, raw_record JSONB, quarantined_at TIMESTAMPTZ DEFAULT NOW());\n-- Revision: dedicated classroom schema only; running setup resets this case.\nCREATE TABLE midterm_expense.landing_files(upload_id TEXT PRIMARY KEY,source_table TEXT,expected_rows BIGINT,source_file TEXT,file_size BIGINT,content_base64 TEXT,file_hash TEXT,ingested_at TIMESTAMPTZ DEFAULT NOW(),loaded_by TEXT DEFAULT CURRENT_USER);\nALTER TABLE midterm_expense.staging_employees ADD COLUMN upload_id TEXT;\nALTER TABLE midterm_expense.staging_vendors ADD COLUMN upload_id TEXT;\nALTER TABLE midterm_expense.staging_invoices ADD COLUMN upload_id TEXT;\nALTER TABLE midterm_expense.production_employees ADD COLUMN upload_id TEXT;\nALTER TABLE midterm_expense.production_vendors ADD COLUMN upload_id TEXT;\nALTER TABLE midterm_expense.production_invoices ADD COLUMN upload_id TEXT;\nALTER TABLE midterm_expense.staging_employees ADD COLUMN loaded_by TEXT DEFAULT CURRENT_USER;\nALTER TABLE midterm_expense.staging_vendors ADD COLUMN loaded_by TEXT DEFAULT CURRENT_USER;\nALTER TABLE midterm_expense.staging_invoices ADD COLUMN loaded_by TEXT DEFAULT CURRENT_USER;\nALTER TABLE midterm_expense.production_employees ADD COLUMN loaded_by TEXT;\nALTER TABLE midterm_expense.production_vendors ADD COLUMN loaded_by TEXT;\nALTER TABLE midterm_expense.production_invoices ADD COLUMN loaded_by TEXT;\nCREATE UNIQUE INDEX ON midterm_expense.production_employees(emp_id);\nCREATE UNIQUE INDEX ON midterm_expense.production_vendors(vendor_id);\nCREATE INDEX ON midterm_expense.production_invoices(vendor_id,invoice_date);\nCREATE INDEX ON midterm_expense.production_invoices(employee_id);\nCREATE OR REPLACE FUNCTION midterm_expense.promote(p JSONB) RETURNS JSONB LANGUAGE plpgsql AS $$\nDECLARE b TEXT := 'MIDTERM-' || to_char(clock_timestamp(),'YYYYMMDDHH24MISSUS');\nBEGIN\n TRUNCATE midterm_expense.production_employees,midterm_expense.production_vendors,midterm_expense.production_invoices,midterm_expense.quarantine;\n INSERT INTO midterm_expense.production_employees SELECT (jsonb_populate_record(NULL::midterm_expense.production_employees,v || jsonb_build_object('approval_limit_numeric',v->'approval_limit_thb','row_hash',md5(v::text),'load_batch_id',b))).* FROM jsonb_array_elements(p->'employees') v;\n INSERT INTO midterm_expense.production_vendors SELECT (jsonb_populate_record(NULL::midterm_expense.production_vendors,v || jsonb_build_object('registration_date_typed',v->'registration_date','row_hash',md5(v::text),'load_batch_id',b))).* FROM jsonb_array_elements(p->'vendors') v;\n INSERT INTO midterm_expense.production_invoices SELECT (jsonb_populate_record(NULL::midterm_expense.production_invoices,v || jsonb_build_object('row_hash',md5(v::text),'load_batch_id',b))).* FROM jsonb_array_elements(p->'invoices') v;\n INSERT INTO midterm_expense.quarantine(source_table,row_key,reason,raw_record) SELECT v->>'source_table',v->>'row_key',v->>'reason',v->'raw_record' FROM jsonb_array_elements(p->'quarantine') v;\n RETURN jsonb_build_object('load_batch_id',b,'status','promoted');\nEND $$;",
+        "options": {}
+      }
+    },
+    {
+      "id": "midterm-node-06",
+      "name": "Employee Upload Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -850,
+        -250
+      ],
+      "parameters": {
+        "formTitle": "Midterm Project",
+        "formDescription": "Upload employees.csv",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Employee Data",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "midterm-node-07",
+      "name": "Parse Employees",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        -650,
+        -250
+      ],
+      "parameters": {
+        "binaryPropertyName": "Employee_Data",
+        "fileFormat": "csv",
+        "options": {}
+      }
+    },
+    {
+      "id": "midterm-node-08",
+      "name": "Stage Employees",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        -250
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH input AS (SELECT $1::jsonb r,$2::jsonb m), saved AS (INSERT INTO midterm_expense.landing_files(upload_id,source_table,expected_rows,source_file,file_size,content_base64,file_hash) SELECT m->>'upload_id',m->>'source_table',(m->>'expected_rows')::bigint,m->>'source_file',(m->>'file_size')::bigint,m->>'content_base64',md5(decode(m->>'content_base64','base64')) FROM input ON CONFLICT(upload_id) DO NOTHING) INSERT INTO midterm_expense.staging_employees(emp_id,emp_name,department,role,bank_account,address,approval_limit_thb,active_flag,source_file,upload_id) SELECT r->>'emp_id',r->>'emp_name',r->>'department',r->>'role',r->>'bank_account',r->>'address',r->>'approval_limit_thb',r->>'active_flag',m->>'source_file',m->>'upload_id' FROM input;",
+        "options": {
+          "queryBatching": "transaction",
+          "queryReplacement": "={{ [JSON.stringify($json), JSON.stringify($('Capture Raw Employees').first().json.manifest)] }}"
+        }
+      }
+    },
+    {
+      "id": "midterm-node-09",
+      "name": "Merchant Upload Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -850,
+        -40
+      ],
+      "parameters": {
+        "formTitle": "Midterm Project",
+        "formDescription": "Upload vendors.csv",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Vendor Data",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "midterm-node-10",
+      "name": "Parse Merchants",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        -650,
+        -40
+      ],
+      "parameters": {
+        "binaryPropertyName": "Vendor_Data",
+        "fileFormat": "csv",
+        "options": {}
+      }
+    },
+    {
+      "id": "midterm-node-11",
+      "name": "Stage Merchants",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        -40
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH input AS (SELECT $1::jsonb r,$2::jsonb m), saved AS (INSERT INTO midterm_expense.landing_files(upload_id,source_table,expected_rows,source_file,file_size,content_base64,file_hash) SELECT m->>'upload_id',m->>'source_table',(m->>'expected_rows')::bigint,m->>'source_file',(m->>'file_size')::bigint,m->>'content_base64',md5(decode(m->>'content_base64','base64')) FROM input ON CONFLICT(upload_id) DO NOTHING) INSERT INTO midterm_expense.staging_vendors(vendor_id,vendor_name,category,owner_name,bank_account,address,registration_date,risk_country,active_flag,source_file,upload_id) SELECT r->>'vendor_id',r->>'vendor_name',r->>'category',r->>'owner_name',r->>'bank_account',r->>'address',r->>'registration_date',r->>'risk_country',r->>'active_flag',m->>'source_file',m->>'upload_id' FROM input;",
+        "options": {
+          "queryBatching": "transaction",
+          "queryReplacement": "={{ [JSON.stringify($json), JSON.stringify($('Capture Raw Merchants').first().json.manifest)] }}"
+        }
+      }
+    },
+    {
+      "id": "midterm-node-12",
+      "name": "Expense Claim Upload Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -850,
+        170
+      ],
+      "parameters": {
+        "formTitle": "Midterm Project",
+        "formDescription": "Upload invoices.csv",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Invoice Data",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "midterm-node-13",
+      "name": "Parse Expense Claims",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [
+        -650,
+        170
+      ],
+      "parameters": {
+        "binaryPropertyName": "Invoice_Data",
+        "fileFormat": "csv",
+        "options": {}
+      }
+    },
+    {
+      "id": "midterm-node-14",
+      "name": "Stage Expense Claims",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        170
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH input AS (SELECT $1::jsonb r,$2::jsonb m), saved AS (INSERT INTO midterm_expense.landing_files(upload_id,source_table,expected_rows,source_file,file_size,content_base64,file_hash) SELECT m->>'upload_id',m->>'source_table',(m->>'expected_rows')::bigint,m->>'source_file',(m->>'file_size')::bigint,m->>'content_base64',md5(decode(m->>'content_base64','base64')) FROM input ON CONFLICT(upload_id) DO NOTHING) INSERT INTO midterm_expense.staging_invoices(invoice_id,invoice_number,vendor_id,employee_id,approver_id,invoice_date,amount_thb,description,po_id,payment_method,currency,source_file,upload_id) SELECT r->>'invoice_id',r->>'invoice_number',r->>'vendor_id',r->>'employee_id',r->>'approver_id',r->>'invoice_date',r->>'amount_thb',r->>'description',r->>'po_id',r->>'payment_method',r->>'currency',m->>'source_file',m->>'upload_id' FROM input;",
+        "options": {
+          "queryBatching": "transaction",
+          "queryReplacement": "={{ [JSON.stringify($json), JSON.stringify($('Capture Raw Expense Claims').first().json.manifest)] }}"
+        }
+      }
+    },
+    {
+      "id": "midterm-node-15",
+      "name": "Run Controls and Analytics",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        280,
+        -180
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "midterm-node-16",
+      "name": "Validate, Clean and Promote",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        760,
+        -220
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT midterm_expense.promote($1::jsonb) AS promotion;",
+        "options": {
+          "queryReplacement": "={{ [JSON.stringify($json)] }}",
+          "queryBatching": "transaction"
+        }
+      }
+    },
+    {
+      "id": "midterm-node-17",
+      "name": "Fetch Production Bundle",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        990,
+        -220
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT json_build_object('employees',(SELECT coalesce(json_agg(e),'[]') FROM midterm_expense.production_employees e),'vendors',(SELECT coalesce(json_agg(v),'[]') FROM midterm_expense.production_vendors v),'invoices',(SELECT coalesce(json_agg(i),'[]') FROM midterm_expense.production_invoices i),'quarantine',(SELECT coalesce(json_agg(q),'[]') FROM midterm_expense.quarantine q)) AS payload;",
+        "options": {
+          "largeNumbersOutput": "numbers"
+        }
+      }
+    },
+    {
+      "id": "midterm-node-18",
+      "name": "Fraud Analytics Engine",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1460,
+        -220
+      ],
+      "parameters": {
+        "jsCode": "// Shared offline and n8n implementation. No network or external packages.\nconst mean = xs => xs.length ? xs.reduce((a,x)=>a+x,0)/xs.length : null;\nconst variance = xs => xs.length>1 ? xs.reduce((a,x)=>a+(x-mean(xs))**2,0)/(xs.length-1) : null;\nfunction quantile(xs,p) { if(!xs.length)return null;const s=[...xs].sort((a,b)=>a-b);const i=(s.length-1)*p;const k=Math.floor(i);return s[k]+(s[Math.min(k+1,s.length-1)]-s[k])*(i-k); }\nconst median = xs => quantile(xs,0.5);\nfunction validDate(s) {if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(String(s)))return false;const d=new Date(s+'T00:00:00Z');return Number.isFinite(d.valueOf())&&d.toISOString().slice(0,10)===s;}\nfunction numeric(x) {if(!/^-?\\d+(\\.\\d+)?$/.test(String(x??'')))return null;const v=Number(x);return Number.isFinite(v)?v:null;}\nfunction profileTable(rows,key,amountField) {\n const fields=[...new Set(rows.flatMap(r=>Object.keys(r)))];const ids=rows.map(r=>String(r[key]??''));const vals=rows.map(r=>numeric(r[amountField])).filter(x=>x!==null);const med=median(vals),q1=quantile(vals,.25),q3=quantile(vals,.75),iqr=vals.length?q3-q1:null;\n return {rows:rows.length,distinct_keys:new Set(ids.filter(Boolean)).size,duplicate_key_rows:ids.length-new Set(ids).size,missing_by_field:Object.fromEntries(fields.map(k=>[k,rows.filter(r=>r[k]==null||String(r[k]).trim()==='').length])),amount:{numeric_rows:vals.length,invalid_rows:rows.length-vals.length,min:vals.length?Math.min(...vals):null,max:vals.length?Math.max(...vals):null,mean:mean(vals),median:med,mad:vals.length?median(vals.map(x=>Math.abs(x-med))):null,q1,q3,iqr,lower_fence:iqr!==null?q1-1.5*iqr:null,upper_fence:iqr!==null?q3+1.5*iqr:null,negative_rows:vals.filter(x=>x<0).length},date_coverage:rows.filter(r=>validDate(r.invoice_date)).map(r=>r.invoice_date).sort().filter((x,i,a)=>i===0||i===a.length-1)};\n}\nfunction prepareData(raw) {\n const quarantine=[];const clean={employees:[],vendors:[],invoices:[]};const profiles={raw:{employees:profileTable(raw.employees||[],'emp_id','approval_limit_thb'),vendors:profileTable(raw.vendors||[],'vendor_id','unused'),invoices:profileTable(raw.invoices||[],'invoice_id','amount_thb')}};\n const reject=(table,r,reason)=>quarantine.push({source_table:table,row_key:String(r.invoice_id??r.emp_id??r.vendor_id??''),reason,raw_record:{...r}});\n for(const [table,key] of [['employees','emp_id'],['vendors','vendor_id']]){\n  const seen=new Set();for(const r of raw[table]||[]){const id=String(r[key]??'');let reason='';if(!id.trim())reason='missing '+key;else if(seen.has(id))reason='duplicate '+key;else if(table==='employees'&&(numeric(r.approval_limit_thb)===null||numeric(r.approval_limit_thb)<0))reason='invalid approval_limit_thb';else if(table==='vendors'&&!validDate(r.registration_date))reason='invalid registration_date';seen.add(id);if(reason)reject(table,r,reason);else clean[table].push({...r});}\n }\n const emp=new Set(clean.employees.map(r=>r.emp_id)),ven=new Set(clean.vendors.map(r=>r.vendor_id));const seen=new Set();\n for(const r of raw.invoices||[]){let reason='';const id=String(r.invoice_id??'');if(!id.trim()||!String(r.invoice_number??'').trim())reason='missing invoice key';else if(seen.has(id))reason='duplicate invoice_id';else if(!validDate(r.invoice_date))reason='invalid invoice_date';else if(numeric(r.amount_thb)===null||numeric(r.amount_thb)<=0)reason='invalid amount_thb';else if(!ven.has(r.vendor_id))reason='unknown vendor_id';else if(!emp.has(r.employee_id)||!emp.has(r.approver_id))reason='unknown employee or approver';seen.add(id);if(reason)reject('invoices',r,reason);else clean.invoices.push({...r,amount_thb:numeric(r.amount_thb)});}\n const tables=Object.fromEntries(Object.keys(clean).map(t=>{const rawCount=(raw[t]||[]).length,q=quarantine.filter(r=>r.source_table===t).length;return[t,{raw:rawCount,production:clean[t].length,quarantined:q,difference:rawCount-clean[t].length-q,pass:rawCount===clean[t].length+q}];}));\n const sum=rs=>rs.reduce((a,r)=>a+(numeric(r.amount_thb)??0),0);const rawSum=sum(raw.invoices||[]),prod=sum(clean.invoices),qSum=sum(quarantine.filter(r=>r.source_table==='invoices').map(r=>r.raw_record));const diff=rawSum-prod-qSum;\n const controls={tables,invoice_amounts:{raw_numeric:rawSum,production:prod,quarantined_numeric:qSum,unparseable_rows:(raw.invoices||[]).filter(r=>numeric(r.amount_thb)===null).length,difference:diff,pass:Math.abs(diff)<0.005},staging_invoice_rows:tables.invoices.raw,production_invoice_rows:tables.invoices.production,quarantined_rows:tables.invoices.quarantined};\n if(raw.landing_controls)controls.source_to_staging=Object.fromEntries(Object.keys(clean).map(t=>[t,{landing_rows:Number(raw.landing_controls[t]??-1),staging_rows:tables[t].raw,pass:Number(raw.landing_controls[t])===tables[t].raw}]));\n profiles.production={invoices:profileTable(clean.invoices,'invoice_id','amount_thb')};profiles.monthly=Object.entries(clean.invoices.reduce((a,r)=>{const k=r.invoice_date.slice(0,7);a[k]??={count:0,amount_thb:0};a[k].count++;a[k].amount_thb+=r.amount_thb;return a;},{})).sort().map(([month,v])=>({month,...v}));\n profiles.by_vendor=clean.vendors.map(v=>({vendor_id:v.vendor_id,category:v.category,...profileTable(clean.invoices.filter(r=>r.vendor_id===v.vendor_id),'invoice_id','amount_thb')}));\n return {...clean,quarantine,controls,profiles};\n}\nfunction assertReconciled(c) {\n if(!c?.tables||!['employees','vendors','invoices'].every(t=>c.tables[t]?.pass===true)||c.invoice_amounts?.pass!==true||(c.source_to_staging&&!Object.values(c.source_to_staging).every(t=>t.pass===true)))throw new Error('Reconciliation failed: verify row counts, monetary totals and quarantine before analytics.');\n return true;\n}\n// Lanczos log-gamma and regularized incomplete beta yield two-sided Student t p-values.\nfunction logGamma(z) {const c=[676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-.13857109526572012,9.984369578019572e-6,1.5056327351493116e-7];if(z<.5)return Math.log(Math.PI)-Math.log(Math.sin(Math.PI*z))-logGamma(1-z);z-=1;let x=.99999999999980993;for(let i=0;i<c.length;i++)x+=c[i]/(z+i+1);const t=z+7.5;return .5*Math.log(2*Math.PI)+(z+.5)*Math.log(t)-t+Math.log(x);}\nfunction betaFraction(a,b,x){const tiny=1e-300;let c=1,d=1-(a+b)*x/(a+1);if(Math.abs(d)<tiny)d=tiny;d=1/d;let h=d;for(let m=1;m<=300;m++){let aa=m*(b-m)*x/((a+2*m-1)*(a+2*m));d=1+aa*d;if(Math.abs(d)<tiny)d=tiny;c=1+aa/c;if(Math.abs(c)<tiny)c=tiny;d=1/d;h*=d*c;aa=-(a+m)*(a+b+m)*x/((a+2*m)*(a+2*m+1));d=1+aa*d;if(Math.abs(d)<tiny)d=tiny;c=1+aa/c;if(Math.abs(c)<tiny)c=tiny;d=1/d;const delta=d*c;h*=delta;if(Math.abs(delta-1)<3e-14)return h;}throw new Error('Beta calculation did not converge');}\nfunction betaRegularized(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const f=Math.exp(logGamma(a+b)-logGamma(a)-logGamma(b)+a*Math.log(x)+b*Math.log1p(-x));return x<(a+1)/(a+b+2)?f*betaFraction(a,b,x)/a:1-f*betaFraction(b,a,1-x)/b;}\nfunction welchTest(a,b){const base={method:'Welch independent two-sample t-test',n_a:a.length,n_b:b.length,mean_a:mean(a),mean_b:mean(b),t:null,df:null,p_value:null,significant:false};if(a.length<2||b.length<2)return{...base,status:'insufficient_data'};const av=variance(a)/a.length,bv=variance(b)/b.length;if(av+bv<=0)return{...base,status:'zero_variance'};const t=(mean(a)-mean(b))/Math.sqrt(av+bv),df=(av+bv)**2/(av**2/(a.length-1)+bv**2/(b.length-1));const p=betaRegularized(df/(df+t*t),df/2,.5);return{...base,status:'ok',t,df,p_value:p,significant:p<.05};}\nfunction scanBreakpoints(rows,min=4){const s=[...rows].sort((a,b)=>a.invoice_date.localeCompare(b.invoice_date)||a.invoice_id.localeCompare(b.invoice_id));const tests=[];for(let k=min;k<=s.length-min;k++){if(s[k-1].invoice_date===s[k].invoice_date)continue;const r=welchTest(s.slice(0,k).map(x=>x.amount_thb),s.slice(k).map(x=>x.amount_thb));if(r.status==='ok')tests.push({...r,split_date:s[k].invoice_date,n_old:k,n_new:s.length-k});}for(const r of tests){r.adjusted_p_value=Math.min(1,r.p_value*tests.length);r.significant=r.adjusted_p_value<.05;}tests.sort((a,b)=>a.adjusted_p_value-b.adjusted_p_value);return{method:'Exploratory transaction-amount breakpoint scan with Welch tests',correction:'Bonferroni within the target-vendor scan',minimum_transactions_per_side:min,test_count:tests.length,best:tests[0]??null,candidates:tests,limitations:'Transactions may be correlated within monthly purchase clusters. P-values are approximate screening evidence, not independent proof of fraud.'};}\nfunction statisticalAnalysis(invoices,vendors,config={}) {\n if(config.target_employee_id){\n  const id=config.target_employee_id,byVendor=Object.fromEntries(vendors.map(v=>[v.vendor_id,v]));const category=config.analysis_category??'Hotel';const target=invoices.filter(r=>r.employee_id===id&&byVendor[r.vendor_id]?.category===category);const scan=scanBreakpoints(target);const start=config.peer_start??scan.best?.split_date??null,end=config.peer_end??target.map(x=>x.invoice_date).sort().at(-1)??null;const employees=config.employees||[];const department=employees.find(e=>e.emp_id===id)?.department;const peerIds=department?employees.filter(e=>e.emp_id!==id&&e.department===department).map(e=>e.emp_id):[];const inWindow=r=>start&&end&&r.invoice_date>=start&&r.invoice_date<=end;const a=target.filter(inWindow).map(r=>r.amount_thb),b=invoices.filter(r=>peerIds.includes(r.employee_id)&&byVendor[r.vendor_id]?.category===category&&inWindow(r)).map(r=>r.amount_thb);\n  return{target_employee_id:id,breakpoint:scan,peer:{...welchTest(a,b),category,department,peer_employee_ids:peerIds.filter(id=>invoices.some(r=>r.employee_id===id&&byVendor[r.vendor_id]?.category===category&&inWindow(r))),window_start:start,window_end:end,window_selection:'Exploratory scan-selected window; same category and department.',limitations:'Repeated claims may be correlated. Trip duration and geography are unavailable; category/department matching does not ensure equivalent travel. Data-selected windows make this a screening comparison.'}};\n }\n const targetId=config.target_vendor_id??'V012';const target=invoices.filter(r=>r.vendor_id===targetId);const scan=scanBreakpoints(target);const start=config.peer_start??scan.best?.split_date??null;const end=config.peer_end??target.map(x=>x.invoice_date).sort().at(-1)??null;const category=vendors.find(v=>v.vendor_id===targetId)?.category;const peerIds=category?vendors.filter(v=>v.vendor_id!==targetId&&v.category===category).map(v=>v.vendor_id):[];\n const inWindow=r=>start&&end&&r.invoice_date>=start&&r.invoice_date<=end;\n const a=target.filter(inWindow).map(r=>r.amount_thb),b=invoices.filter(r=>peerIds.includes(r.vendor_id)&&inWindow(r)).map(r=>r.amount_thb);\n return{target_vendor_id:targetId,breakpoint:scan,peer:{...welchTest(a,b),category:category??null,peer_vendor_ids:peerIds.filter(id=>invoices.some(r=>r.vendor_id===id&&inWindow(r))),window_start:start,window_end:end,window_selection:'Start derived from exploratory breakpoint unless explicitly configured; comparison is exploratory and data-selected.',limitations:'Same category and dates do not guarantee identical purchase mix. Repeated transactions and window selection limit inferential interpretation.'}};\n}\nfunction expenseRules(invoices,vendors,employees,config={}){\n const alerts=[],byVendor=Object.fromEntries(vendors.map(v=>[v.vendor_id,v]));\n for(const e of employees)for(const v of vendors)if(e.bank_account&&e.bank_account===v.bank_account)alerts.push({severity:'Critical',model:'Relational control',entity:e.emp_id+' / '+v.vendor_id,amount_thb:null,reason:'Employee '+e.emp_name+' and merchant '+v.vendor_name+' share bank account '+e.bank_account+'. Verify account ownership.'});\n const duplicates={};for(const r of invoices){const key=r.vendor_id+'|'+r.invoice_number;(duplicates[key]??=[]).push(r);}\n for(const group of Object.values(duplicates))if(group.length>1)alerts.push({severity:'High',model:'Duplicate receipt rule',entity:group.map(r=>r.invoice_id).join(', '),amount_thb:group.reduce((a,r)=>a+r.amount_thb,0),reason:'The same merchant receipt '+group[0].invoice_number+' appears in '+group.length+' separate reimbursement claims. Verify original receipts and any reversals.'});\n for(const r of invoices){if(r.employee_id===r.approver_id)alerts.push({severity:'High',model:'Segregation of duties',entity:r.invoice_id,amount_thb:r.amount_thb,reason:r.employee_id+' submitted and approved the same claim.'});const category=byVendor[r.vendor_id]?.category,cap=config.policy_caps?.[category];if(Number.isFinite(cap)&&r.amount_thb>cap)alerts.push({severity:'High',model:'Expense policy cap',entity:r.invoice_id,amount_thb:r.amount_thb,reason:category+' claim exceeds the fictitious THB '+cap+' per-claim policy cap. A documented exception may explain it.'});}\n const category=config.analysis_category??'Hotel',group=invoices.filter(r=>byVendor[r.vendor_id]?.category===category),vals=group.map(r=>r.amount_thb),med=median(vals),mad=vals.length?median(vals.map(x=>Math.abs(x-med))):null;\n if(mad>0)for(const r of group){const z=.6745*(r.amount_thb-med)/mad;if(Math.abs(z)>=3.5)alerts.push({severity:'Medium',model:'Robust z-score',entity:r.invoice_id,amount_thb:r.amount_thb,reason:'Modified robust z-score '+z.toFixed(2)+' within '+category+' claims.'});}\n return alerts;\n}\n\nconst p=$input.first().json.payload;const data=typeof p==='string'?JSON.parse(p):p;const employees=data.employees||[],vendors=data.vendors||[],invoices=(data.invoices||[]).map(x=>({...x,amount_thb:Number(x.amount_thb)})),controls=data.controls||{};const config={\"case_title\":\"Travel and expense reimbursement fraud at Aster Field Services\",\"case_slug\":\"Expense_Fraud\",\"company\":\"Aster Field Services\",\"case_type\":\"expense_reimbursement\",\"target_employee_id\":\"E009\",\"target_merchant_id\":\"V011\",\"analysis_category\":\"Hotel\",\"policy_caps\":{\"Hotel\":9000,\"Flight\":20000,\"Meal\":2500,\"Taxi\":1500},\"data_files\":{\"employees\":\"employees.csv\",\"vendors\":\"merchants.csv\",\"invoices\":\"expense_claims.csv\"},\"schema\":\"midterm_expense\",\"year\":2026,\"coverage\":\"Complete fictitious Jan-Dec 2026 expense ledger\",\"notes\":\"Generic accounting columns invoice_id, invoice_number, vendor_id and po_id represent claim ID, receipt number, merchant ID and trip reference. This is a new employee-expense case, not procurement splitting.\"};\nconst alerts=expenseRules(invoices,vendors,employees,config);const statistics=statisticalAnalysis(invoices,vendors,{...config,employees});const peer=statistics.peer,best=statistics.breakpoint.best;\nconst categoryRows=invoices.filter(r=>vendors.find(v=>v.vendor_id===r.vendor_id)?.category===config.analysis_category);const med=median(categoryRows.map(r=>r.amount_thb)),mad=median(categoryRows.map(r=>Math.abs(r.amount_thb-med)));\nconst monthly=[];for(let m=1;m<=12;m++){const month='2026-'+String(m).padStart(2,'0');const rs=invoices.filter(x=>x.employee_id===config.target_employee_id&&vendors.find(v=>v.vendor_id===x.vendor_id)?.category===config.analysis_category&&x.invoice_date.startsWith(month));monthly.push({month,amount_thb:rs.reduce((a,x)=>a+x.amount_thb,0),transactions:rs.length});}\nconst byModel=Object.entries(alerts.reduce((a,x)=>{a[x.model]=(a[x.model]||0)+1;return a;},{})).map(([model,count])=>({model,count}));\nconst exposed=new Set(alerts.filter(a=>['Expense policy cap','Duplicate receipt rule'].includes(a.model)).flatMap(a=>a.entity.split(', ').map(x=>x.trim())));const exposure=invoices.filter(r=>exposed.has(r.invoice_id)).reduce((a,r)=>a+r.amount_thb,0);\nreturn [{json:{project:config.case_title,controls,profiles:data.profiles||{},statistics,summary:{alert_count:alerts.length,critical_alerts:alerts.filter(a=>a.severity==='Critical').length,review_exposure_thb:exposure,peer_t_statistic:peer.t,breakpoint_t_statistic:best?.t??null,category_median_thb:med,category_mad_thb:mad,robust_z_status:mad>0?'ok':'unavailable_zero_MAD'},monthly_spend_target:monthly,alerts_by_model:byModel,alerts,interpretation:'E009 and V011 warrant investigation of expense reimbursement, receipt reuse and approval conflicts. These screens do not establish fraud or intent.'}}];"
+      }
+    },
+    {
+      "id": "midterm-node-19",
+      "name": "HTML Report Generator",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        -220
+      ],
+      "parameters": {
+        "jsCode": "const r=$input.first().json;const esc=s=>String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');const sections=['controls','profiles','statistics'].map(k=>'<h2>'+k+'</h2><pre>'+esc(JSON.stringify(r[k],null,2))+'</pre>').join('');const rows=(r.alerts||[]).map(a=>'<tr><td>'+esc(a.severity)+'</td><td>'+esc(a.model)+'</td><td>'+esc(a.entity)+'</td><td>'+esc(a.amount_thb)+'</td><td>'+esc(a.reason)+'</td></tr>').join('');const html='<html><head><meta charset=\"utf-8\"><style>body{font:15px Arial;margin:32px;color:#17243a}pre{white-space:pre-wrap}td,th{padding:8px;border-bottom:1px solid #ddd}table{width:100%;border-collapse:collapse}</style></head><body><h1>Expense Fraud Analytics Report</h1><p>'+esc(r.interpretation)+'</p>'+sections+'<h2>Alerts</h2><table><tr><th>Severity</th><th>Model</th><th>Entity</th><th>THB</th><th>Reason</th></tr>'+rows+'</table></body></html>';return [{json:{summary:r.summary,statistics:r.statistics,controls:r.controls},binary:{report_file:{data:Buffer.from(html).toString('base64'),mimeType:'text/html',fileName:'midterm_expense_fraud_report.html'}}}];"
+      }
+    },
+    {
+      "id": "midterm-node-20",
+      "name": "Model Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        350,
+        350
+      ],
+      "parameters": {
+        "content": "### Expense analytical models\nRules: merchant receipt reuse, self-approval, category policy caps, employee/merchant account match.\nStatistics: modified robust z-score, same-category/same-department Welch peers, exploratory Welch breakpoint scan with minimum 4 observations per side and Bonferroni correction.\nGemini explains evidence. It is not a trained fraud classifier.",
+        "height": 260,
+        "width": 720,
+        "color": 7
+      }
+    },
+    {
+      "id": "revision-capture-raw-employees",
+      "name": "Capture Raw Employees",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -690,
+        -250
+      ],
+      "parameters": {
+        "jsCode": "function parseCsv(text){const rows=[];let r=[],c='',q=false;for(let i=0;i<text.length;i++){const ch=text[i];if(q){if(ch==='\"'&&text[i+1]==='\"'){c+='\"';i++;}else if(ch==='\"')q=false;else c+=ch;}else if(ch==='\"')q=true;else if(ch===','){r.push(c);c='';}else if(ch==='\\n'){r.push(c);rows.push(r);r=[];c='';}else if(ch!=='\\r')c+=ch;}if(c||r.length){r.push(c);rows.push(r);}const[h,...body]=rows;return body.filter(r=>r.some(Boolean)).map(r=>Object.fromEntries(h.map((x,i)=>[x,r[i]??''])));}\nconst item=$input.first(); const key=Object.keys(item.binary||{})[0]; if(!key)throw new Error('Upload one CSV file.'); const bytes=await this.helpers.getBinaryDataBuffer(0,key);const expected_rows=parseCsv(bytes.toString('utf8')).length;if(!expected_rows)throw new Error('CSV contains no data rows.'); const manifest={upload_id:'employees-'+$execution.id,source_table:'employees',expected_rows,source_file:item.binary[key].fileName||'employees.csv',file_size:bytes.length,content_base64:bytes.toString('base64')}; return [{json:{...item.json,manifest},binary:item.binary}];"
+      }
+    },
+    {
+      "id": "revision-capture-raw-vendors",
+      "name": "Capture Raw Merchants",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -690,
+        -40
+      ],
+      "parameters": {
+        "jsCode": "function parseCsv(text){const rows=[];let r=[],c='',q=false;for(let i=0;i<text.length;i++){const ch=text[i];if(q){if(ch==='\"'&&text[i+1]==='\"'){c+='\"';i++;}else if(ch==='\"')q=false;else c+=ch;}else if(ch==='\"')q=true;else if(ch===','){r.push(c);c='';}else if(ch==='\\n'){r.push(c);rows.push(r);r=[];c='';}else if(ch!=='\\r')c+=ch;}if(c||r.length){r.push(c);rows.push(r);}const[h,...body]=rows;return body.filter(r=>r.some(Boolean)).map(r=>Object.fromEntries(h.map((x,i)=>[x,r[i]??''])));}\nconst item=$input.first(); const key=Object.keys(item.binary||{})[0]; if(!key)throw new Error('Upload one CSV file.'); const bytes=await this.helpers.getBinaryDataBuffer(0,key);const expected_rows=parseCsv(bytes.toString('utf8')).length;if(!expected_rows)throw new Error('CSV contains no data rows.'); const manifest={upload_id:'vendors-'+$execution.id,source_table:'vendors',expected_rows,source_file:item.binary[key].fileName||'vendors.csv',file_size:bytes.length,content_base64:bytes.toString('base64')}; return [{json:{...item.json,manifest},binary:item.binary}];"
+      }
+    },
+    {
+      "id": "revision-capture-raw-invoices",
+      "name": "Capture Raw Expense Claims",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -690,
+        170
+      ],
+      "parameters": {
+        "jsCode": "function parseCsv(text){const rows=[];let r=[],c='',q=false;for(let i=0;i<text.length;i++){const ch=text[i];if(q){if(ch==='\"'&&text[i+1]==='\"'){c+='\"';i++;}else if(ch==='\"')q=false;else c+=ch;}else if(ch==='\"')q=true;else if(ch===','){r.push(c);c='';}else if(ch==='\\n'){r.push(c);rows.push(r);r=[];c='';}else if(ch!=='\\r')c+=ch;}if(c||r.length){r.push(c);rows.push(r);}const[h,...body]=rows;return body.filter(r=>r.some(Boolean)).map(r=>Object.fromEntries(h.map((x,i)=>[x,r[i]??''])));}\nconst item=$input.first(); const key=Object.keys(item.binary||{})[0]; if(!key)throw new Error('Upload one CSV file.'); const bytes=await this.helpers.getBinaryDataBuffer(0,key);const expected_rows=parseCsv(bytes.toString('utf8')).length;if(!expected_rows)throw new Error('CSV contains no data rows.'); const manifest={upload_id:'invoices-'+$execution.id,source_table:'invoices',expected_rows,source_file:item.binary[key].fileName||'invoices.csv',file_size:bytes.length,content_base64:bytes.toString('base64')}; return [{json:{...item.json,manifest},binary:item.binary}];"
+      }
+    },
+    {
+      "id": "revision-fetch-staging-bundle",
+      "name": "Fetch Staging Bundle",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        300,
+        -220
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT json_build_object('employees',(SELECT coalesce(json_agg(e ORDER BY raw_row_id),'[]') FROM midterm_expense.staging_employees e),'vendors',(SELECT coalesce(json_agg(v ORDER BY raw_row_id),'[]') FROM midterm_expense.staging_vendors v),'invoices',(SELECT coalesce(json_agg(i ORDER BY raw_row_id),'[]') FROM midterm_expense.staging_invoices i),'landing_controls',(SELECT json_object_agg(source_table,expected_rows) FROM (SELECT source_table,sum(expected_rows) expected_rows FROM midterm_expense.landing_files GROUP BY source_table) x)) AS payload;",
+        "options": {}
+      }
+    },
+    {
+      "id": "revision-assess-integrity-and-profile",
+      "name": "Assess Integrity and Profile",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        530,
+        -220
+      ],
+      "parameters": {
+        "jsCode": "// Shared offline and n8n implementation. No network or external packages.\nconst mean = xs => xs.length ? xs.reduce((a,x)=>a+x,0)/xs.length : null;\nconst variance = xs => xs.length>1 ? xs.reduce((a,x)=>a+(x-mean(xs))**2,0)/(xs.length-1) : null;\nfunction quantile(xs,p) { if(!xs.length)return null;const s=[...xs].sort((a,b)=>a-b);const i=(s.length-1)*p;const k=Math.floor(i);return s[k]+(s[Math.min(k+1,s.length-1)]-s[k])*(i-k); }\nconst median = xs => quantile(xs,0.5);\nfunction validDate(s) {if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(String(s)))return false;const d=new Date(s+'T00:00:00Z');return Number.isFinite(d.valueOf())&&d.toISOString().slice(0,10)===s;}\nfunction numeric(x) {if(!/^-?\\d+(\\.\\d+)?$/.test(String(x??'')))return null;const v=Number(x);return Number.isFinite(v)?v:null;}\nfunction profileTable(rows,key,amountField) {\n const fields=[...new Set(rows.flatMap(r=>Object.keys(r)))];const ids=rows.map(r=>String(r[key]??''));const vals=rows.map(r=>numeric(r[amountField])).filter(x=>x!==null);const med=median(vals),q1=quantile(vals,.25),q3=quantile(vals,.75),iqr=vals.length?q3-q1:null;\n return {rows:rows.length,distinct_keys:new Set(ids.filter(Boolean)).size,duplicate_key_rows:ids.length-new Set(ids).size,missing_by_field:Object.fromEntries(fields.map(k=>[k,rows.filter(r=>r[k]==null||String(r[k]).trim()==='').length])),amount:{numeric_rows:vals.length,invalid_rows:rows.length-vals.length,min:vals.length?Math.min(...vals):null,max:vals.length?Math.max(...vals):null,mean:mean(vals),median:med,mad:vals.length?median(vals.map(x=>Math.abs(x-med))):null,q1,q3,iqr,lower_fence:iqr!==null?q1-1.5*iqr:null,upper_fence:iqr!==null?q3+1.5*iqr:null,negative_rows:vals.filter(x=>x<0).length},date_coverage:rows.filter(r=>validDate(r.invoice_date)).map(r=>r.invoice_date).sort().filter((x,i,a)=>i===0||i===a.length-1)};\n}\nfunction prepareData(raw) {\n const quarantine=[];const clean={employees:[],vendors:[],invoices:[]};const profiles={raw:{employees:profileTable(raw.employees||[],'emp_id','approval_limit_thb'),vendors:profileTable(raw.vendors||[],'vendor_id','unused'),invoices:profileTable(raw.invoices||[],'invoice_id','amount_thb')}};\n const reject=(table,r,reason)=>quarantine.push({source_table:table,row_key:String(r.invoice_id??r.emp_id??r.vendor_id??''),reason,raw_record:{...r}});\n for(const [table,key] of [['employees','emp_id'],['vendors','vendor_id']]){\n  const seen=new Set();for(const r of raw[table]||[]){const id=String(r[key]??'');let reason='';if(!id.trim())reason='missing '+key;else if(seen.has(id))reason='duplicate '+key;else if(table==='employees'&&(numeric(r.approval_limit_thb)===null||numeric(r.approval_limit_thb)<0))reason='invalid approval_limit_thb';else if(table==='vendors'&&!validDate(r.registration_date))reason='invalid registration_date';seen.add(id);if(reason)reject(table,r,reason);else clean[table].push({...r});}\n }\n const emp=new Set(clean.employees.map(r=>r.emp_id)),ven=new Set(clean.vendors.map(r=>r.vendor_id));const seen=new Set();\n for(const r of raw.invoices||[]){let reason='';const id=String(r.invoice_id??'');if(!id.trim()||!String(r.invoice_number??'').trim())reason='missing invoice key';else if(seen.has(id))reason='duplicate invoice_id';else if(!validDate(r.invoice_date))reason='invalid invoice_date';else if(numeric(r.amount_thb)===null||numeric(r.amount_thb)<=0)reason='invalid amount_thb';else if(!ven.has(r.vendor_id))reason='unknown vendor_id';else if(!emp.has(r.employee_id)||!emp.has(r.approver_id))reason='unknown employee or approver';seen.add(id);if(reason)reject('invoices',r,reason);else clean.invoices.push({...r,amount_thb:numeric(r.amount_thb)});}\n const tables=Object.fromEntries(Object.keys(clean).map(t=>{const rawCount=(raw[t]||[]).length,q=quarantine.filter(r=>r.source_table===t).length;return[t,{raw:rawCount,production:clean[t].length,quarantined:q,difference:rawCount-clean[t].length-q,pass:rawCount===clean[t].length+q}];}));\n const sum=rs=>rs.reduce((a,r)=>a+(numeric(r.amount_thb)??0),0);const rawSum=sum(raw.invoices||[]),prod=sum(clean.invoices),qSum=sum(quarantine.filter(r=>r.source_table==='invoices').map(r=>r.raw_record));const diff=rawSum-prod-qSum;\n const controls={tables,invoice_amounts:{raw_numeric:rawSum,production:prod,quarantined_numeric:qSum,unparseable_rows:(raw.invoices||[]).filter(r=>numeric(r.amount_thb)===null).length,difference:diff,pass:Math.abs(diff)<0.005},staging_invoice_rows:tables.invoices.raw,production_invoice_rows:tables.invoices.production,quarantined_rows:tables.invoices.quarantined};\n if(raw.landing_controls)controls.source_to_staging=Object.fromEntries(Object.keys(clean).map(t=>[t,{landing_rows:Number(raw.landing_controls[t]??-1),staging_rows:tables[t].raw,pass:Number(raw.landing_controls[t])===tables[t].raw}]));\n profiles.production={invoices:profileTable(clean.invoices,'invoice_id','amount_thb')};profiles.monthly=Object.entries(clean.invoices.reduce((a,r)=>{const k=r.invoice_date.slice(0,7);a[k]??={count:0,amount_thb:0};a[k].count++;a[k].amount_thb+=r.amount_thb;return a;},{})).sort().map(([month,v])=>({month,...v}));\n profiles.by_vendor=clean.vendors.map(v=>({vendor_id:v.vendor_id,category:v.category,...profileTable(clean.invoices.filter(r=>r.vendor_id===v.vendor_id),'invoice_id','amount_thb')}));\n return {...clean,quarantine,controls,profiles};\n}\nfunction assertReconciled(c) {\n if(!c?.tables||!['employees','vendors','invoices'].every(t=>c.tables[t]?.pass===true)||c.invoice_amounts?.pass!==true||(c.source_to_staging&&!Object.values(c.source_to_staging).every(t=>t.pass===true)))throw new Error('Reconciliation failed: verify row counts, monetary totals and quarantine before analytics.');\n return true;\n}\n// Lanczos log-gamma and regularized incomplete beta yield two-sided Student t p-values.\nfunction logGamma(z) {const c=[676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-.13857109526572012,9.984369578019572e-6,1.5056327351493116e-7];if(z<.5)return Math.log(Math.PI)-Math.log(Math.sin(Math.PI*z))-logGamma(1-z);z-=1;let x=.99999999999980993;for(let i=0;i<c.length;i++)x+=c[i]/(z+i+1);const t=z+7.5;return .5*Math.log(2*Math.PI)+(z+.5)*Math.log(t)-t+Math.log(x);}\nfunction betaFraction(a,b,x){const tiny=1e-300;let c=1,d=1-(a+b)*x/(a+1);if(Math.abs(d)<tiny)d=tiny;d=1/d;let h=d;for(let m=1;m<=300;m++){let aa=m*(b-m)*x/((a+2*m-1)*(a+2*m));d=1+aa*d;if(Math.abs(d)<tiny)d=tiny;c=1+aa/c;if(Math.abs(c)<tiny)c=tiny;d=1/d;h*=d*c;aa=-(a+m)*(a+b+m)*x/((a+2*m)*(a+2*m+1));d=1+aa*d;if(Math.abs(d)<tiny)d=tiny;c=1+aa/c;if(Math.abs(c)<tiny)c=tiny;d=1/d;const delta=d*c;h*=delta;if(Math.abs(delta-1)<3e-14)return h;}throw new Error('Beta calculation did not converge');}\nfunction betaRegularized(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const f=Math.exp(logGamma(a+b)-logGamma(a)-logGamma(b)+a*Math.log(x)+b*Math.log1p(-x));return x<(a+1)/(a+b+2)?f*betaFraction(a,b,x)/a:1-f*betaFraction(b,a,1-x)/b;}\nfunction welchTest(a,b){const base={method:'Welch independent two-sample t-test',n_a:a.length,n_b:b.length,mean_a:mean(a),mean_b:mean(b),t:null,df:null,p_value:null,significant:false};if(a.length<2||b.length<2)return{...base,status:'insufficient_data'};const av=variance(a)/a.length,bv=variance(b)/b.length;if(av+bv<=0)return{...base,status:'zero_variance'};const t=(mean(a)-mean(b))/Math.sqrt(av+bv),df=(av+bv)**2/(av**2/(a.length-1)+bv**2/(b.length-1));const p=betaRegularized(df/(df+t*t),df/2,.5);return{...base,status:'ok',t,df,p_value:p,significant:p<.05};}\nfunction scanBreakpoints(rows,min=4){const s=[...rows].sort((a,b)=>a.invoice_date.localeCompare(b.invoice_date)||a.invoice_id.localeCompare(b.invoice_id));const tests=[];for(let k=min;k<=s.length-min;k++){if(s[k-1].invoice_date===s[k].invoice_date)continue;const r=welchTest(s.slice(0,k).map(x=>x.amount_thb),s.slice(k).map(x=>x.amount_thb));if(r.status==='ok')tests.push({...r,split_date:s[k].invoice_date,n_old:k,n_new:s.length-k});}for(const r of tests){r.adjusted_p_value=Math.min(1,r.p_value*tests.length);r.significant=r.adjusted_p_value<.05;}tests.sort((a,b)=>a.adjusted_p_value-b.adjusted_p_value);return{method:'Exploratory transaction-amount breakpoint scan with Welch tests',correction:'Bonferroni within the target-vendor scan',minimum_transactions_per_side:min,test_count:tests.length,best:tests[0]??null,candidates:tests,limitations:'Transactions may be correlated within monthly purchase clusters. P-values are approximate screening evidence, not independent proof of fraud.'};}\nfunction statisticalAnalysis(invoices,vendors,config={}) {\n if(config.target_employee_id){\n  const id=config.target_employee_id,byVendor=Object.fromEntries(vendors.map(v=>[v.vendor_id,v]));const category=config.analysis_category??'Hotel';const target=invoices.filter(r=>r.employee_id===id&&byVendor[r.vendor_id]?.category===category);const scan=scanBreakpoints(target);const start=config.peer_start??scan.best?.split_date??null,end=config.peer_end??target.map(x=>x.invoice_date).sort().at(-1)??null;const employees=config.employees||[];const department=employees.find(e=>e.emp_id===id)?.department;const peerIds=department?employees.filter(e=>e.emp_id!==id&&e.department===department).map(e=>e.emp_id):[];const inWindow=r=>start&&end&&r.invoice_date>=start&&r.invoice_date<=end;const a=target.filter(inWindow).map(r=>r.amount_thb),b=invoices.filter(r=>peerIds.includes(r.employee_id)&&byVendor[r.vendor_id]?.category===category&&inWindow(r)).map(r=>r.amount_thb);\n  return{target_employee_id:id,breakpoint:scan,peer:{...welchTest(a,b),category,department,peer_employee_ids:peerIds.filter(id=>invoices.some(r=>r.employee_id===id&&byVendor[r.vendor_id]?.category===category&&inWindow(r))),window_start:start,window_end:end,window_selection:'Exploratory scan-selected window; same category and department.',limitations:'Repeated claims may be correlated. Trip duration and geography are unavailable; category/department matching does not ensure equivalent travel. Data-selected windows make this a screening comparison.'}};\n }\n const targetId=config.target_vendor_id??'V012';const target=invoices.filter(r=>r.vendor_id===targetId);const scan=scanBreakpoints(target);const start=config.peer_start??scan.best?.split_date??null;const end=config.peer_end??target.map(x=>x.invoice_date).sort().at(-1)??null;const category=vendors.find(v=>v.vendor_id===targetId)?.category;const peerIds=category?vendors.filter(v=>v.vendor_id!==targetId&&v.category===category).map(v=>v.vendor_id):[];\n const inWindow=r=>start&&end&&r.invoice_date>=start&&r.invoice_date<=end;\n const a=target.filter(inWindow).map(r=>r.amount_thb),b=invoices.filter(r=>peerIds.includes(r.vendor_id)&&inWindow(r)).map(r=>r.amount_thb);\n return{target_vendor_id:targetId,breakpoint:scan,peer:{...welchTest(a,b),category:category??null,peer_vendor_ids:peerIds.filter(id=>invoices.some(r=>r.vendor_id===id&&inWindow(r))),window_start:start,window_end:end,window_selection:'Start derived from exploratory breakpoint unless explicitly configured; comparison is exploratory and data-selected.',limitations:'Same category and dates do not guarantee identical purchase mix. Repeated transactions and window selection limit inferential interpretation.'}};\n}\nfunction expenseRules(invoices,vendors,employees,config={}){\n const alerts=[],byVendor=Object.fromEntries(vendors.map(v=>[v.vendor_id,v]));\n for(const e of employees)for(const v of vendors)if(e.bank_account&&e.bank_account===v.bank_account)alerts.push({severity:'Critical',model:'Relational control',entity:e.emp_id+' / '+v.vendor_id,amount_thb:null,reason:'Employee '+e.emp_name+' and merchant '+v.vendor_name+' share bank account '+e.bank_account+'. Verify account ownership.'});\n const duplicates={};for(const r of invoices){const key=r.vendor_id+'|'+r.invoice_number;(duplicates[key]??=[]).push(r);}\n for(const group of Object.values(duplicates))if(group.length>1)alerts.push({severity:'High',model:'Duplicate receipt rule',entity:group.map(r=>r.invoice_id).join(', '),amount_thb:group.reduce((a,r)=>a+r.amount_thb,0),reason:'The same merchant receipt '+group[0].invoice_number+' appears in '+group.length+' separate reimbursement claims. Verify original receipts and any reversals.'});\n for(const r of invoices){if(r.employee_id===r.approver_id)alerts.push({severity:'High',model:'Segregation of duties',entity:r.invoice_id,amount_thb:r.amount_thb,reason:r.employee_id+' submitted and approved the same claim.'});const category=byVendor[r.vendor_id]?.category,cap=config.policy_caps?.[category];if(Number.isFinite(cap)&&r.amount_thb>cap)alerts.push({severity:'High',model:'Expense policy cap',entity:r.invoice_id,amount_thb:r.amount_thb,reason:category+' claim exceeds the fictitious THB '+cap+' per-claim policy cap. A documented exception may explain it.'});}\n const category=config.analysis_category??'Hotel',group=invoices.filter(r=>byVendor[r.vendor_id]?.category===category),vals=group.map(r=>r.amount_thb),med=median(vals),mad=vals.length?median(vals.map(x=>Math.abs(x-med))):null;\n if(mad>0)for(const r of group){const z=.6745*(r.amount_thb-med)/mad;if(Math.abs(z)>=3.5)alerts.push({severity:'Medium',model:'Robust z-score',entity:r.invoice_id,amount_thb:r.amount_thb,reason:'Modified robust z-score '+z.toFixed(2)+' within '+category+' claims.'});}\n return alerts;\n}\n\nconst p=$input.first().json.payload;const r=prepareData(typeof p==='string'?JSON.parse(p):p);assertReconciled(r.controls);return [{json:r}];"
+      }
+    },
+    {
+      "id": "revision-reconcile-production-gate",
+      "name": "Reconcile Production Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1220,
+        -220
+      ],
+      "parameters": {
+        "jsCode": "// Shared offline and n8n implementation. No network or external packages.\nconst mean = xs => xs.length ? xs.reduce((a,x)=>a+x,0)/xs.length : null;\nconst variance = xs => xs.length>1 ? xs.reduce((a,x)=>a+(x-mean(xs))**2,0)/(xs.length-1) : null;\nfunction quantile(xs,p) { if(!xs.length)return null;const s=[...xs].sort((a,b)=>a-b);const i=(s.length-1)*p;const k=Math.floor(i);return s[k]+(s[Math.min(k+1,s.length-1)]-s[k])*(i-k); }\nconst median = xs => quantile(xs,0.5);\nfunction validDate(s) {if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(String(s)))return false;const d=new Date(s+'T00:00:00Z');return Number.isFinite(d.valueOf())&&d.toISOString().slice(0,10)===s;}\nfunction numeric(x) {if(!/^-?\\d+(\\.\\d+)?$/.test(String(x??'')))return null;const v=Number(x);return Number.isFinite(v)?v:null;}\nfunction profileTable(rows,key,amountField) {\n const fields=[...new Set(rows.flatMap(r=>Object.keys(r)))];const ids=rows.map(r=>String(r[key]??''));const vals=rows.map(r=>numeric(r[amountField])).filter(x=>x!==null);const med=median(vals),q1=quantile(vals,.25),q3=quantile(vals,.75),iqr=vals.length?q3-q1:null;\n return {rows:rows.length,distinct_keys:new Set(ids.filter(Boolean)).size,duplicate_key_rows:ids.length-new Set(ids).size,missing_by_field:Object.fromEntries(fields.map(k=>[k,rows.filter(r=>r[k]==null||String(r[k]).trim()==='').length])),amount:{numeric_rows:vals.length,invalid_rows:rows.length-vals.length,min:vals.length?Math.min(...vals):null,max:vals.length?Math.max(...vals):null,mean:mean(vals),median:med,mad:vals.length?median(vals.map(x=>Math.abs(x-med))):null,q1,q3,iqr,lower_fence:iqr!==null?q1-1.5*iqr:null,upper_fence:iqr!==null?q3+1.5*iqr:null,negative_rows:vals.filter(x=>x<0).length},date_coverage:rows.filter(r=>validDate(r.invoice_date)).map(r=>r.invoice_date).sort().filter((x,i,a)=>i===0||i===a.length-1)};\n}\nfunction prepareData(raw) {\n const quarantine=[];const clean={employees:[],vendors:[],invoices:[]};const profiles={raw:{employees:profileTable(raw.employees||[],'emp_id','approval_limit_thb'),vendors:profileTable(raw.vendors||[],'vendor_id','unused'),invoices:profileTable(raw.invoices||[],'invoice_id','amount_thb')}};\n const reject=(table,r,reason)=>quarantine.push({source_table:table,row_key:String(r.invoice_id??r.emp_id??r.vendor_id??''),reason,raw_record:{...r}});\n for(const [table,key] of [['employees','emp_id'],['vendors','vendor_id']]){\n  const seen=new Set();for(const r of raw[table]||[]){const id=String(r[key]??'');let reason='';if(!id.trim())reason='missing '+key;else if(seen.has(id))reason='duplicate '+key;else if(table==='employees'&&(numeric(r.approval_limit_thb)===null||numeric(r.approval_limit_thb)<0))reason='invalid approval_limit_thb';else if(table==='vendors'&&!validDate(r.registration_date))reason='invalid registration_date';seen.add(id);if(reason)reject(table,r,reason);else clean[table].push({...r});}\n }\n const emp=new Set(clean.employees.map(r=>r.emp_id)),ven=new Set(clean.vendors.map(r=>r.vendor_id));const seen=new Set();\n for(const r of raw.invoices||[]){let reason='';const id=String(r.invoice_id??'');if(!id.trim()||!String(r.invoice_number??'').trim())reason='missing invoice key';else if(seen.has(id))reason='duplicate invoice_id';else if(!validDate(r.invoice_date))reason='invalid invoice_date';else if(numeric(r.amount_thb)===null||numeric(r.amount_thb)<=0)reason='invalid amount_thb';else if(!ven.has(r.vendor_id))reason='unknown vendor_id';else if(!emp.has(r.employee_id)||!emp.has(r.approver_id))reason='unknown employee or approver';seen.add(id);if(reason)reject('invoices',r,reason);else clean.invoices.push({...r,amount_thb:numeric(r.amount_thb)});}\n const tables=Object.fromEntries(Object.keys(clean).map(t=>{const rawCount=(raw[t]||[]).length,q=quarantine.filter(r=>r.source_table===t).length;return[t,{raw:rawCount,production:clean[t].length,quarantined:q,difference:rawCount-clean[t].length-q,pass:rawCount===clean[t].length+q}];}));\n const sum=rs=>rs.reduce((a,r)=>a+(numeric(r.amount_thb)??0),0);const rawSum=sum(raw.invoices||[]),prod=sum(clean.invoices),qSum=sum(quarantine.filter(r=>r.source_table==='invoices').map(r=>r.raw_record));const diff=rawSum-prod-qSum;\n const controls={tables,invoice_amounts:{raw_numeric:rawSum,production:prod,quarantined_numeric:qSum,unparseable_rows:(raw.invoices||[]).filter(r=>numeric(r.amount_thb)===null).length,difference:diff,pass:Math.abs(diff)<0.005},staging_invoice_rows:tables.invoices.raw,production_invoice_rows:tables.invoices.production,quarantined_rows:tables.invoices.quarantined};\n if(raw.landing_controls)controls.source_to_staging=Object.fromEntries(Object.keys(clean).map(t=>[t,{landing_rows:Number(raw.landing_controls[t]??-1),staging_rows:tables[t].raw,pass:Number(raw.landing_controls[t])===tables[t].raw}]));\n profiles.production={invoices:profileTable(clean.invoices,'invoice_id','amount_thb')};profiles.monthly=Object.entries(clean.invoices.reduce((a,r)=>{const k=r.invoice_date.slice(0,7);a[k]??={count:0,amount_thb:0};a[k].count++;a[k].amount_thb+=r.amount_thb;return a;},{})).sort().map(([month,v])=>({month,...v}));\n profiles.by_vendor=clean.vendors.map(v=>({vendor_id:v.vendor_id,category:v.category,...profileTable(clean.invoices.filter(r=>r.vendor_id===v.vendor_id),'invoice_id','amount_thb')}));\n return {...clean,quarantine,controls,profiles};\n}\nfunction assertReconciled(c) {\n if(!c?.tables||!['employees','vendors','invoices'].every(t=>c.tables[t]?.pass===true)||c.invoice_amounts?.pass!==true||(c.source_to_staging&&!Object.values(c.source_to_staging).every(t=>t.pass===true)))throw new Error('Reconciliation failed: verify row counts, monetary totals and quarantine before analytics.');\n return true;\n}\n// Lanczos log-gamma and regularized incomplete beta yield two-sided Student t p-values.\nfunction logGamma(z) {const c=[676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-.13857109526572012,9.984369578019572e-6,1.5056327351493116e-7];if(z<.5)return Math.log(Math.PI)-Math.log(Math.sin(Math.PI*z))-logGamma(1-z);z-=1;let x=.99999999999980993;for(let i=0;i<c.length;i++)x+=c[i]/(z+i+1);const t=z+7.5;return .5*Math.log(2*Math.PI)+(z+.5)*Math.log(t)-t+Math.log(x);}\nfunction betaFraction(a,b,x){const tiny=1e-300;let c=1,d=1-(a+b)*x/(a+1);if(Math.abs(d)<tiny)d=tiny;d=1/d;let h=d;for(let m=1;m<=300;m++){let aa=m*(b-m)*x/((a+2*m-1)*(a+2*m));d=1+aa*d;if(Math.abs(d)<tiny)d=tiny;c=1+aa/c;if(Math.abs(c)<tiny)c=tiny;d=1/d;h*=d*c;aa=-(a+m)*(a+b+m)*x/((a+2*m)*(a+2*m+1));d=1+aa*d;if(Math.abs(d)<tiny)d=tiny;c=1+aa/c;if(Math.abs(c)<tiny)c=tiny;d=1/d;const delta=d*c;h*=delta;if(Math.abs(delta-1)<3e-14)return h;}throw new Error('Beta calculation did not converge');}\nfunction betaRegularized(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const f=Math.exp(logGamma(a+b)-logGamma(a)-logGamma(b)+a*Math.log(x)+b*Math.log1p(-x));return x<(a+1)/(a+b+2)?f*betaFraction(a,b,x)/a:1-f*betaFraction(b,a,1-x)/b;}\nfunction welchTest(a,b){const base={method:'Welch independent two-sample t-test',n_a:a.length,n_b:b.length,mean_a:mean(a),mean_b:mean(b),t:null,df:null,p_value:null,significant:false};if(a.length<2||b.length<2)return{...base,status:'insufficient_data'};const av=variance(a)/a.length,bv=variance(b)/b.length;if(av+bv<=0)return{...base,status:'zero_variance'};const t=(mean(a)-mean(b))/Math.sqrt(av+bv),df=(av+bv)**2/(av**2/(a.length-1)+bv**2/(b.length-1));const p=betaRegularized(df/(df+t*t),df/2,.5);return{...base,status:'ok',t,df,p_value:p,significant:p<.05};}\nfunction scanBreakpoints(rows,min=4){const s=[...rows].sort((a,b)=>a.invoice_date.localeCompare(b.invoice_date)||a.invoice_id.localeCompare(b.invoice_id));const tests=[];for(let k=min;k<=s.length-min;k++){if(s[k-1].invoice_date===s[k].invoice_date)continue;const r=welchTest(s.slice(0,k).map(x=>x.amount_thb),s.slice(k).map(x=>x.amount_thb));if(r.status==='ok')tests.push({...r,split_date:s[k].invoice_date,n_old:k,n_new:s.length-k});}for(const r of tests){r.adjusted_p_value=Math.min(1,r.p_value*tests.length);r.significant=r.adjusted_p_value<.05;}tests.sort((a,b)=>a.adjusted_p_value-b.adjusted_p_value);return{method:'Exploratory transaction-amount breakpoint scan with Welch tests',correction:'Bonferroni within the target-vendor scan',minimum_transactions_per_side:min,test_count:tests.length,best:tests[0]??null,candidates:tests,limitations:'Transactions may be correlated within monthly purchase clusters. P-values are approximate screening evidence, not independent proof of fraud.'};}\nfunction statisticalAnalysis(invoices,vendors,config={}) {\n if(config.target_employee_id){\n  const id=config.target_employee_id,byVendor=Object.fromEntries(vendors.map(v=>[v.vendor_id,v]));const category=config.analysis_category??'Hotel';const target=invoices.filter(r=>r.employee_id===id&&byVendor[r.vendor_id]?.category===category);const scan=scanBreakpoints(target);const start=config.peer_start??scan.best?.split_date??null,end=config.peer_end??target.map(x=>x.invoice_date).sort().at(-1)??null;const employees=config.employees||[];const department=employees.find(e=>e.emp_id===id)?.department;const peerIds=department?employees.filter(e=>e.emp_id!==id&&e.department===department).map(e=>e.emp_id):[];const inWindow=r=>start&&end&&r.invoice_date>=start&&r.invoice_date<=end;const a=target.filter(inWindow).map(r=>r.amount_thb),b=invoices.filter(r=>peerIds.includes(r.employee_id)&&byVendor[r.vendor_id]?.category===category&&inWindow(r)).map(r=>r.amount_thb);\n  return{target_employee_id:id,breakpoint:scan,peer:{...welchTest(a,b),category,department,peer_employee_ids:peerIds.filter(id=>invoices.some(r=>r.employee_id===id&&byVendor[r.vendor_id]?.category===category&&inWindow(r))),window_start:start,window_end:end,window_selection:'Exploratory scan-selected window; same category and department.',limitations:'Repeated claims may be correlated. Trip duration and geography are unavailable; category/department matching does not ensure equivalent travel. Data-selected windows make this a screening comparison.'}};\n }\n const targetId=config.target_vendor_id??'V012';const target=invoices.filter(r=>r.vendor_id===targetId);const scan=scanBreakpoints(target);const start=config.peer_start??scan.best?.split_date??null;const end=config.peer_end??target.map(x=>x.invoice_date).sort().at(-1)??null;const category=vendors.find(v=>v.vendor_id===targetId)?.category;const peerIds=category?vendors.filter(v=>v.vendor_id!==targetId&&v.category===category).map(v=>v.vendor_id):[];\n const inWindow=r=>start&&end&&r.invoice_date>=start&&r.invoice_date<=end;\n const a=target.filter(inWindow).map(r=>r.amount_thb),b=invoices.filter(r=>peerIds.includes(r.vendor_id)&&inWindow(r)).map(r=>r.amount_thb);\n return{target_vendor_id:targetId,breakpoint:scan,peer:{...welchTest(a,b),category:category??null,peer_vendor_ids:peerIds.filter(id=>invoices.some(r=>r.vendor_id===id&&inWindow(r))),window_start:start,window_end:end,window_selection:'Start derived from exploratory breakpoint unless explicitly configured; comparison is exploratory and data-selected.',limitations:'Same category and dates do not guarantee identical purchase mix. Repeated transactions and window selection limit inferential interpretation.'}};\n}\nfunction expenseRules(invoices,vendors,employees,config={}){\n const alerts=[],byVendor=Object.fromEntries(vendors.map(v=>[v.vendor_id,v]));\n for(const e of employees)for(const v of vendors)if(e.bank_account&&e.bank_account===v.bank_account)alerts.push({severity:'Critical',model:'Relational control',entity:e.emp_id+' / '+v.vendor_id,amount_thb:null,reason:'Employee '+e.emp_name+' and merchant '+v.vendor_name+' share bank account '+e.bank_account+'. Verify account ownership.'});\n const duplicates={};for(const r of invoices){const key=r.vendor_id+'|'+r.invoice_number;(duplicates[key]??=[]).push(r);}\n for(const group of Object.values(duplicates))if(group.length>1)alerts.push({severity:'High',model:'Duplicate receipt rule',entity:group.map(r=>r.invoice_id).join(', '),amount_thb:group.reduce((a,r)=>a+r.amount_thb,0),reason:'The same merchant receipt '+group[0].invoice_number+' appears in '+group.length+' separate reimbursement claims. Verify original receipts and any reversals.'});\n for(const r of invoices){if(r.employee_id===r.approver_id)alerts.push({severity:'High',model:'Segregation of duties',entity:r.invoice_id,amount_thb:r.amount_thb,reason:r.employee_id+' submitted and approved the same claim.'});const category=byVendor[r.vendor_id]?.category,cap=config.policy_caps?.[category];if(Number.isFinite(cap)&&r.amount_thb>cap)alerts.push({severity:'High',model:'Expense policy cap',entity:r.invoice_id,amount_thb:r.amount_thb,reason:category+' claim exceeds the fictitious THB '+cap+' per-claim policy cap. A documented exception may explain it.'});}\n const category=config.analysis_category??'Hotel',group=invoices.filter(r=>byVendor[r.vendor_id]?.category===category),vals=group.map(r=>r.amount_thb),med=median(vals),mad=vals.length?median(vals.map(x=>Math.abs(x-med))):null;\n if(mad>0)for(const r of group){const z=.6745*(r.amount_thb-med)/mad;if(Math.abs(z)>=3.5)alerts.push({severity:'Medium',model:'Robust z-score',entity:r.invoice_id,amount_thb:r.amount_thb,reason:'Modified robust z-score '+z.toFixed(2)+' within '+category+' claims.'});}\n return alerts;\n}\n\nconst expected=$('Assess Integrity and Profile').first().json;const p=$input.first().json.payload;const stored=typeof p==='string'?JSON.parse(p):p;const controls=JSON.parse(JSON.stringify(expected.controls));for(const t of ['employees','vendors','invoices']){const actual=(stored[t]||[]).length,q=(stored.quarantine||[]).filter(r=>r.source_table===t).length;controls.tables[t].production=actual;controls.tables[t].quarantined=q;controls.tables[t].difference=controls.tables[t].raw-actual-q;controls.tables[t].pass=controls.tables[t].difference===0;}controls.invoice_amounts.production=(stored.invoices||[]).reduce((a,r)=>a+Number(r.amount_thb),0);controls.invoice_amounts.quarantined_numeric=(stored.quarantine||[]).filter(r=>r.source_table==='invoices').reduce((a,r)=>a+(numeric(r.raw_record.amount_thb)??0),0);controls.invoice_amounts.difference=controls.invoice_amounts.raw_numeric-controls.invoice_amounts.production-controls.invoice_amounts.quarantined_numeric;controls.invoice_amounts.pass=Math.abs(controls.invoice_amounts.difference)<.005;assertReconciled(controls);return [{json:{payload:{...stored,controls,profiles:expected.profiles}}}];"
+      }
+    }
+  ],
+  "connections": {
+    "Setup Database": {
+      "main": [
+        [
+          {
+            "node": "Create Midterm Schema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Employee Upload Form": {
+      "main": [
+        [
+          {
+            "node": "Capture Raw Employees",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Employees": {
+      "main": [
+        [
+          {
+            "node": "Stage Employees",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merchant Upload Form": {
+      "main": [
+        [
+          {
+            "node": "Capture Raw Merchants",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Merchants": {
+      "main": [
+        [
+          {
+            "node": "Stage Merchants",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Expense Claim Upload Form": {
+      "main": [
+        [
+          {
+            "node": "Capture Raw Expense Claims",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Expense Claims": {
+      "main": [
+        [
+          {
+            "node": "Stage Expense Claims",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Controls and Analytics": {
+      "main": [
+        [
+          {
+            "node": "Fetch Staging Bundle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate, Clean and Promote": {
+      "main": [
+        [
+          {
+            "node": "Fetch Production Bundle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Production Bundle": {
+      "main": [
+        [
+          {
+            "node": "Reconcile Production Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fraud Analytics Engine": {
+      "main": [
+        [
+          {
+            "node": "HTML Report Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Capture Raw Employees": {
+      "main": [
+        [
+          {
+            "node": "Parse Employees",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Capture Raw Merchants": {
+      "main": [
+        [
+          {
+            "node": "Parse Merchants",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Capture Raw Expense Claims": {
+      "main": [
+        [
+          {
+            "node": "Parse Expense Claims",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Staging Bundle": {
+      "main": [
+        [
+          {
+            "node": "Assess Integrity and Profile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assess Integrity and Profile": {
+      "main": [
+        [
+          {
+            "node": "Validate, Clean and Promote",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reconcile Production Gate": {
+      "main": [
+        [
+          {
+            "node": "Fraud Analytics Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "midterm-procurement-revised-20260930",
+  "tags": []
+}

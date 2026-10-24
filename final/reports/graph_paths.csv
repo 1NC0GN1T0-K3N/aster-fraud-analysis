@@ -1,0 +1,7 @@
+employee_a,via_merchant,employee_b,left_claim_count,right_claim_count,left_claim_ids,right_claim_ids,interpretation
+E009,V031,E037,8,4,FC-00118;FC-00579;FC-00582;FC-01350;FC-01592;FC-01781;FC-01997;FC-02220,FC-00081;FC-01341;FC-01778;FC-02139,Both employees claimed this merchant. No direct employee relationship is established.
+E009,V031,E065,8,11,FC-00118;FC-00579;FC-00582;FC-01350;FC-01592;FC-01781;FC-01997;FC-02220,FC-00021;FC-00540;FC-00672;FC-00902;FC-00927;FC-01295;FC-01325;FC-01367;FC-01657;FC-01698;FC-02103,Both employees claimed this merchant. No direct employee relationship is established.
+E037,V031,E065,4,11,FC-00081;FC-01341;FC-01778;FC-02139,FC-00021;FC-00540;FC-00672;FC-00902;FC-00927;FC-01295;FC-01325;FC-01367;FC-01657;FC-01698;FC-02103,Both employees claimed this merchant. No direct employee relationship is established.
+E009,V032,E037,3,11,FC-00267;FC-00270;FC-01131,FC-00008;FC-00496;FC-00588;FC-00706;FC-00845;FC-00979;FC-01205;FC-01396;FC-01561;FC-02059;FC-02325,Both employees claimed this merchant. No direct employee relationship is established.
+E009,V032,E065,3,7,FC-00267;FC-00270;FC-01131,FC-00051;FC-00142;FC-00201;FC-00282;FC-00313;FC-00868;FC-01068,Both employees claimed this merchant. No direct employee relationship is established.
+E037,V032,E065,11,7,FC-00008;FC-00496;FC-00588;FC-00706;FC-00845;FC-00979;FC-01205;FC-01396;FC-01561;FC-02059;FC-02325,FC-00051;FC-00142;FC-00201;FC-00282;FC-00313;FC-00868;FC-01068,Both employees claimed this merchant. No direct employee relationship is established.

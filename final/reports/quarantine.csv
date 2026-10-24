@@ -1,0 +1,13 @@
+claim_id,employee_id,merchant_id,approver_id,trip_id,approval_id,receipt_number,category,city,nights,amount_thb,submitted_at,currency,business_purpose,source_row,reasons
+FC-00388,E116,V009,E002,T-00388,A-00388,R-01-0387,Hotel,Chiang Mai,3,10330.45,2025-01-02T02:17:00,THB,Approved customer visit or field service,4801,duplicate_claim_id
+BAD-002,E014,V023,E002,T-00096,A-00096,R-01-0095,Flight,Chiang Mai,1,invalid,2025-01-02T05:37:00,THB,Approved customer visit or field service,4802,invalid_amount
+BAD-003,E092,V011,E002,T-00174,A-00174,R-01-0173,Hotel,Chiang Mai,4,-200,2025-01-02T06:09:00,THB,Approved customer visit or field service,4803,invalid_amount
+BAD-004,E025,V004,E006,T-00309,A-00309,R-01-0308,Meal,Chiang Mai,1,2016.11,not-a-date,THB,Approved customer visit or field service,4804,invalid_timestamp
+BAD-005,E999,V013,E006,T-00050,A-00050,R-01-0049,Taxi,Khon Kaen,1,606.75,2025-01-02T09:24:00,THB,Approved customer visit or field service,4805,unknown_employee
+BAD-006,E999,V030,E005,T-00286,A-00286,R-01-0285,Flight,Chiang Mai,1,5296.39,2025-01-02T10:25:00,THB,Approved customer visit or field service,4806,unknown_employee
+BAD-007,E116,V999,E002,T-00371,A-00371,R-01-0370,Taxi,Khon Kaen,1,867.01,2025-01-02T10:44:00,THB,Approved customer visit or field service,4807,unknown_merchant
+BAD-008,E043,V999,E001,T-00283,A-00283,R-01-0282,Hotel,Khon Kaen,1,2350.88,2025-01-02T11:03:00,THB,Approved customer visit or field service,4808,unknown_merchant
+BAD-009,E072,V002,E006,T-MISSING,A-00339,R-01-0338,Hotel,Bangkok,4,14903.42,2025-01-02T11:13:00,THB,Approved customer visit or field service,4809,unknown_trip
+BAD-010,E083,V011,E005,T-00340,A-MISSING,R-01-0339,Hotel,Chiang Mai,4,13134.02,2025-01-02T11:43:00,THB,Approved customer visit or field service,4810,unknown_approval
+BAD-011,E054,V013,E003,T-00355,A-00355,R-01-0354,Hotel,Bangkok,0,8710.55,2025-01-02T13:14:00,THB,Approved customer visit or field service,4811,invalid_nights
+BAD-012,E085,V009,E003,T-00322,A-00322,R-01-0321,Hotel,Bangkok,1,3443.16,2025-01-02T13:54:00,USD,Approved customer visit or field service,4812,unexpected_currency

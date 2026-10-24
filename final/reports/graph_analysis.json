@@ -1,0 +1,1744 @@
+{
+  "method": "Training-only employee\u2013merchant affiliation graph",
+  "networkx_version": "3.6.1",
+  "input_columns": [
+    "claim_id",
+    "employee_id",
+    "merchant_id",
+    "approver_id",
+    "amount_thb",
+    "submitted_at",
+    "split"
+  ],
+  "training_claims": 2400,
+  "employees": 114,
+  "merchants": 33,
+  "nodes": 147,
+  "edges": 1703,
+  "components": 1,
+  "bipartite_density": 0.45268474215842636,
+  "community_count": 9,
+  "weighted_modularity": 0.17095590277777778,
+  "centrality": "Exact normalized unweighted shortest-path betweenness on all observed training nodes.",
+  "community_method": "Greedy modularity on claim-count weights, resolution 1. Descriptive partition of a bipartite graph.",
+  "focus_selection": "Merchants in qualifying training FP-Growth rules; display employee\u2013merchant edges with at least 3 training claims.",
+  "focus_nodes": 7,
+  "focus_edges": 7,
+  "focus_shared_merchant_paths": 6,
+  "focus_merchants": [
+    "V031",
+    "V032",
+    "V036"
+  ],
+  "node_metrics": [
+    {
+      "node_id": "E007",
+      "node_type": "Employee",
+      "unique_counterparties": 19,
+      "counterpart_fraction": 0.5757575757575758,
+      "claim_count": 27,
+      "amount_thb": 261734.76,
+      "betweenness": 0.002925511679172654,
+      "community_id": 1
+    },
+    {
+      "node_id": "E008",
+      "node_type": "Employee",
+      "unique_counterparties": 11,
+      "counterpart_fraction": 0.3333333333333333,
+      "claim_count": 18,
+      "amount_thb": 203259.65,
+      "betweenness": 0.0008635032823021116,
+      "community_id": 3
+    },
+    {
+      "node_id": "E009",
+      "node_type": "Employee",
+      "unique_counterparties": 19,
+      "counterpart_fraction": 0.5757575757575758,
+      "claim_count": 39,
+      "amount_thb": 317798.3,
+      "betweenness": 0.009934102548565964,
+      "community_id": 7
+    },
+    {
+      "node_id": "E010",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 15,
+      "amount_thb": 170986.8,
+      "betweenness": 0.0013059009977935843,
+      "community_id": 2
+    },
+    {
+      "node_id": "E011",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 16,
+      "amount_thb": 110590.09,
+      "betweenness": 0.0012466529938199061,
+      "community_id": 4
+    },
+    {
+      "node_id": "E012",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 22,
+      "amount_thb": 210736.78,
+      "betweenness": 0.0015154270078396542,
+      "community_id": 6
+    },
+    {
+      "node_id": "E013",
+      "node_type": "Employee",
+      "unique_counterparties": 15,
+      "counterpart_fraction": 0.45454545454545453,
+      "claim_count": 18,
+      "amount_thb": 90430.19,
+      "betweenness": 0.0017652943679964974,
+      "community_id": 1
+    },
+    {
+      "node_id": "E014",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 24,
+      "amount_thb": 205481.66,
+      "betweenness": 0.0025847838877311106,
+      "community_id": 3
+    },
+    {
+      "node_id": "E015",
+      "node_type": "Employee",
+      "unique_counterparties": 19,
+      "counterpart_fraction": 0.5757575757575758,
+      "claim_count": 23,
+      "amount_thb": 243814.93,
+      "betweenness": 0.0028183556076154396,
+      "community_id": 2
+    },
+    {
+      "node_id": "E016",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 19,
+      "amount_thb": 195105.77,
+      "betweenness": 0.0013224114992580133,
+      "community_id": 4
+    },
+    {
+      "node_id": "E017",
+      "node_type": "Employee",
+      "unique_counterparties": 20,
+      "counterpart_fraction": 0.6060606060606061,
+      "claim_count": 29,
+      "amount_thb": 286940.06,
+      "betweenness": 0.003177645840498562,
+      "community_id": 6
+    },
+    {
+      "node_id": "E018",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 20,
+      "amount_thb": 108999.71,
+      "betweenness": 0.0015057751697340172,
+      "community_id": 5
+    },
+    {
+      "node_id": "E019",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 29,
+      "amount_thb": 224739.17,
+      "betweenness": 0.002630275946524126,
+      "community_id": 8
+    },
+    {
+      "node_id": "E020",
+      "node_type": "Employee",
+      "unique_counterparties": 16,
+      "counterpart_fraction": 0.48484848484848486,
+      "claim_count": 63,
+      "amount_thb": 506687.62,
+      "betweenness": 0.0154876798393922,
+      "community_id": 9
+    },
+    {
+      "node_id": "E021",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 18,
+      "amount_thb": 117743.41,
+      "betweenness": 0.001490273993491381,
+      "community_id": 6
+    },
+    {
+      "node_id": "E022",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 20,
+      "amount_thb": 167835.83,
+      "betweenness": 0.001566252343802192,
+      "community_id": 4
+    },
+    {
+      "node_id": "E023",
+      "node_type": "Employee",
+      "unique_counterparties": 9,
+      "counterpart_fraction": 0.2727272727272727,
+      "claim_count": 12,
+      "amount_thb": 139797.69,
+      "betweenness": 0.0005926211298547943,
+      "community_id": 7
+    },
+    {
+      "node_id": "E024",
+      "node_type": "Employee",
+      "unique_counterparties": 16,
+      "counterpart_fraction": 0.48484848484848486,
+      "claim_count": 28,
+      "amount_thb": 187204.36,
+      "betweenness": 0.0019887435992902718,
+      "community_id": 1
+    },
+    {
+      "node_id": "E025",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 15,
+      "amount_thb": 131923.94,
+      "betweenness": 0.0012590213423803128,
+      "community_id": 3
+    },
+    {
+      "node_id": "E026",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 15,
+      "amount_thb": 167557.32,
+      "betweenness": 0.0013167888711789798,
+      "community_id": 6
+    },
+    {
+      "node_id": "E027",
+      "node_type": "Employee",
+      "unique_counterparties": 7,
+      "counterpart_fraction": 0.21212121212121213,
+      "claim_count": 9,
+      "amount_thb": 38360.31,
+      "betweenness": 0.0003426755016001946,
+      "community_id": 8
+    },
+    {
+      "node_id": "E028",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 21,
+      "amount_thb": 171911.63,
+      "betweenness": 0.0025460733027228106,
+      "community_id": 7
+    },
+    {
+      "node_id": "E029",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 17,
+      "amount_thb": 133934.95,
+      "betweenness": 0.0013243045099411103,
+      "community_id": 2
+    },
+    {
+      "node_id": "E030",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 19,
+      "amount_thb": 121441.19,
+      "betweenness": 0.0012759920675661557,
+      "community_id": 8
+    },
+    {
+      "node_id": "E031",
+      "node_type": "Employee",
+      "unique_counterparties": 17,
+      "counterpart_fraction": 0.5151515151515151,
+      "claim_count": 26,
+      "amount_thb": 196744.8,
+      "betweenness": 0.0023602427080801998,
+      "community_id": 5
+    },
+    {
+      "node_id": "E032",
+      "node_type": "Employee",
+      "unique_counterparties": 17,
+      "counterpart_fraction": 0.5151515151515151,
+      "claim_count": 27,
+      "amount_thb": 255160.11,
+      "betweenness": 0.0022883998885686865,
+      "community_id": 3
+    },
+    {
+      "node_id": "E033",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 14,
+      "amount_thb": 101054.02,
+      "betweenness": 0.001561574561519656,
+      "community_id": 1
+    },
+    {
+      "node_id": "E034",
+      "node_type": "Employee",
+      "unique_counterparties": 12,
+      "counterpart_fraction": 0.36363636363636365,
+      "claim_count": 19,
+      "amount_thb": 146919.58,
+      "betweenness": 0.0011156479648954567,
+      "community_id": 1
+    },
+    {
+      "node_id": "E035",
+      "node_type": "Employee",
+      "unique_counterparties": 21,
+      "counterpart_fraction": 0.6363636363636364,
+      "claim_count": 29,
+      "amount_thb": 249029.08,
+      "betweenness": 0.0035889372331490677,
+      "community_id": 1
+    },
+    {
+      "node_id": "E036",
+      "node_type": "Employee",
+      "unique_counterparties": 20,
+      "counterpart_fraction": 0.6060606060606061,
+      "claim_count": 26,
+      "amount_thb": 214906.03,
+      "betweenness": 0.0031657831212203733,
+      "community_id": 3
+    },
+    {
+      "node_id": "E037",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 38,
+      "amount_thb": 355930.0,
+      "betweenness": 0.009123087348491337,
+      "community_id": 7
+    },
+    {
+      "node_id": "E038",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 21,
+      "amount_thb": 114333.71,
+      "betweenness": 0.0014917236756740164,
+      "community_id": 4
+    },
+    {
+      "node_id": "E039",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 18,
+      "amount_thb": 138784.86,
+      "betweenness": 0.0012491810582431258,
+      "community_id": 1
+    },
+    {
+      "node_id": "E040",
+      "node_type": "Employee",
+      "unique_counterparties": 17,
+      "counterpart_fraction": 0.5151515151515151,
+      "claim_count": 26,
+      "amount_thb": 260333.24,
+      "betweenness": 0.002325348828107747,
+      "community_id": 4
+    },
+    {
+      "node_id": "E041",
+      "node_type": "Employee",
+      "unique_counterparties": 12,
+      "counterpart_fraction": 0.36363636363636365,
+      "claim_count": 19,
+      "amount_thb": 195617.02,
+      "betweenness": 0.0010799450512868948,
+      "community_id": 1
+    },
+    {
+      "node_id": "E042",
+      "node_type": "Employee",
+      "unique_counterparties": 15,
+      "counterpart_fraction": 0.45454545454545453,
+      "claim_count": 21,
+      "amount_thb": 132908.86,
+      "betweenness": 0.0017292763881017674,
+      "community_id": 4
+    },
+    {
+      "node_id": "E043",
+      "node_type": "Employee",
+      "unique_counterparties": 15,
+      "counterpart_fraction": 0.45454545454545453,
+      "claim_count": 22,
+      "amount_thb": 179634.98,
+      "betweenness": 0.001738477875515004,
+      "community_id": 5
+    },
+    {
+      "node_id": "E044",
+      "node_type": "Employee",
+      "unique_counterparties": 10,
+      "counterpart_fraction": 0.30303030303030304,
+      "claim_count": 16,
+      "amount_thb": 138280.05,
+      "betweenness": 0.0007377229472526716,
+      "community_id": 2
+    },
+    {
+      "node_id": "E045",
+      "node_type": "Employee",
+      "unique_counterparties": 11,
+      "counterpart_fraction": 0.3333333333333333,
+      "claim_count": 14,
+      "amount_thb": 82785.53,
+      "betweenness": 0.0009109008049376483,
+      "community_id": 2
+    },
+    {
+      "node_id": "E046",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 22,
+      "amount_thb": 148179.82,
+      "betweenness": 0.0025425903836641633,
+      "community_id": 5
+    },
+    {
+      "node_id": "E047",
+      "node_type": "Employee",
+      "unique_counterparties": 15,
+      "counterpart_fraction": 0.45454545454545453,
+      "claim_count": 20,
+      "amount_thb": 126548.45,
+      "betweenness": 0.0017848815696881193,
+      "community_id": 5
+    },
+    {
+      "node_id": "E048",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 22,
+      "amount_thb": 183076.97,
+      "betweenness": 0.0015167949704345612,
+      "community_id": 6
+    },
+    {
+      "node_id": "E049",
+      "node_type": "Employee",
+      "unique_counterparties": 12,
+      "counterpart_fraction": 0.36363636363636365,
+      "claim_count": 16,
+      "amount_thb": 126179.04,
+      "betweenness": 0.0011263727536030825,
+      "community_id": 5
+    },
+    {
+      "node_id": "E050",
+      "node_type": "Employee",
+      "unique_counterparties": 12,
+      "counterpart_fraction": 0.36363636363636365,
+      "claim_count": 15,
+      "amount_thb": 163695.3,
+      "betweenness": 0.0011367449834932168,
+      "community_id": 1
+    },
+    {
+      "node_id": "E051",
+      "node_type": "Employee",
+      "unique_counterparties": 22,
+      "counterpart_fraction": 0.6666666666666666,
+      "claim_count": 30,
+      "amount_thb": 165723.7,
+      "betweenness": 0.003943636237591771,
+      "community_id": 1
+    },
+    {
+      "node_id": "E052",
+      "node_type": "Employee",
+      "unique_counterparties": 19,
+      "counterpart_fraction": 0.5757575757575758,
+      "claim_count": 24,
+      "amount_thb": 182140.42,
+      "betweenness": 0.0064922261614983505,
+      "community_id": 7
+    },
+    {
+      "node_id": "E053",
+      "node_type": "Employee",
+      "unique_counterparties": 20,
+      "counterpart_fraction": 0.6060606060606061,
+      "claim_count": 26,
+      "amount_thb": 275493.74,
+      "betweenness": 0.0031557621520867675,
+      "community_id": 1
+    },
+    {
+      "node_id": "E054",
+      "node_type": "Employee",
+      "unique_counterparties": 17,
+      "counterpart_fraction": 0.5151515151515151,
+      "claim_count": 24,
+      "amount_thb": 157405.95,
+      "betweenness": 0.0022732350188284854,
+      "community_id": 2
+    },
+    {
+      "node_id": "E055",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 20,
+      "amount_thb": 185533.53,
+      "betweenness": 0.0015620978291214496,
+      "community_id": 3
+    },
+    {
+      "node_id": "E056",
+      "node_type": "Employee",
+      "unique_counterparties": 17,
+      "counterpart_fraction": 0.5151515151515151,
+      "claim_count": 21,
+      "amount_thb": 138397.41,
+      "betweenness": 0.002246832628232449,
+      "community_id": 5
+    },
+    {
+      "node_id": "E057",
+      "node_type": "Employee",
+      "unique_counterparties": 16,
+      "counterpart_fraction": 0.48484848484848486,
+      "claim_count": 20,
+      "amount_thb": 104682.89,
+      "betweenness": 0.0020094773891694397,
+      "community_id": 2
+    },
+    {
+      "node_id": "E058",
+      "node_type": "Employee",
+      "unique_counterparties": 16,
+      "counterpart_fraction": 0.48484848484848486,
+      "claim_count": 18,
+      "amount_thb": 171296.82,
+      "betweenness": 0.0020172638753300953,
+      "community_id": 6
+    },
+    {
+      "node_id": "E059",
+      "node_type": "Employee",
+      "unique_counterparties": 17,
+      "counterpart_fraction": 0.5151515151515151,
+      "claim_count": 23,
+      "amount_thb": 162346.59,
+      "betweenness": 0.0022611872993005657,
+      "community_id": 6
+    },
+    {
+      "node_id": "E060",
+      "node_type": "Employee",
+      "unique_counterparties": 16,
+      "counterpart_fraction": 0.48484848484848486,
+      "claim_count": 18,
+      "amount_thb": 155387.33,
+      "betweenness": 0.0019623044480065552,
+      "community_id": 1
+    },
+    {
+      "node_id": "E061",
+      "node_type": "Employee",
+      "unique_counterparties": 11,
+      "counterpart_fraction": 0.3333333333333333,
+      "claim_count": 13,
+      "amount_thb": 93150.88,
+      "betweenness": 0.0009534677217904527,
+      "community_id": 1
+    },
+    {
+      "node_id": "E062",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 19,
+      "amount_thb": 119529.0,
+      "betweenness": 0.0013274078056470424,
+      "community_id": 1
+    },
+    {
+      "node_id": "E063",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 21,
+      "amount_thb": 178161.55,
+      "betweenness": 0.0013144001331931157,
+      "community_id": 5
+    },
+    {
+      "node_id": "E064",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 22,
+      "amount_thb": 154827.87,
+      "betweenness": 0.0026185918811567972,
+      "community_id": 2
+    },
+    {
+      "node_id": "E065",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 33,
+      "amount_thb": 327397.79,
+      "betweenness": 0.006357306820094909,
+      "community_id": 7
+    },
+    {
+      "node_id": "E066",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 22,
+      "amount_thb": 131204.64,
+      "betweenness": 0.0025411898693874853,
+      "community_id": 1
+    },
+    {
+      "node_id": "E067",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 21,
+      "amount_thb": 255590.06,
+      "betweenness": 0.001500956016874587,
+      "community_id": 2
+    },
+    {
+      "node_id": "E068",
+      "node_type": "Employee",
+      "unique_counterparties": 10,
+      "counterpart_fraction": 0.30303030303030304,
+      "claim_count": 12,
+      "amount_thb": 81698.17,
+      "betweenness": 0.0007174828349660608,
+      "community_id": 4
+    },
+    {
+      "node_id": "E069",
+      "node_type": "Employee",
+      "unique_counterparties": 11,
+      "counterpart_fraction": 0.3333333333333333,
+      "claim_count": 15,
+      "amount_thb": 52562.42,
+      "betweenness": 0.0009346584440735699,
+      "community_id": 2
+    },
+    {
+      "node_id": "E070",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 19,
+      "amount_thb": 109126.01,
+      "betweenness": 0.0015459346495019797,
+      "community_id": 4
+    },
+    {
+      "node_id": "E071",
+      "node_type": "Employee",
+      "unique_counterparties": 16,
+      "counterpart_fraction": 0.48484848484848486,
+      "claim_count": 24,
+      "amount_thb": 181952.73,
+      "betweenness": 0.0020916499756432672,
+      "community_id": 3
+    },
+    {
+      "node_id": "E072",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 27,
+      "amount_thb": 261310.08,
+      "betweenness": 0.0026025645513330117,
+      "community_id": 4
+    },
+    {
+      "node_id": "E073",
+      "node_type": "Employee",
+      "unique_counterparties": 12,
+      "counterpart_fraction": 0.36363636363636365,
+      "claim_count": 13,
+      "amount_thb": 93499.28,
+      "betweenness": 0.0010919121490020067,
+      "community_id": 3
+    },
+    {
+      "node_id": "E074",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 25,
+      "amount_thb": 179389.77,
+      "betweenness": 0.0026674455140412072,
+      "community_id": 5
+    },
+    {
+      "node_id": "E075",
+      "node_type": "Employee",
+      "unique_counterparties": 21,
+      "counterpart_fraction": 0.6363636363636364,
+      "claim_count": 24,
+      "amount_thb": 178096.8,
+      "betweenness": 0.0035663403142383427,
+      "community_id": 1
+    },
+    {
+      "node_id": "E076",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 23,
+      "amount_thb": 166027.91,
+      "betweenness": 0.002603615298394628,
+      "community_id": 8
+    },
+    {
+      "node_id": "E077",
+      "node_type": "Employee",
+      "unique_counterparties": 15,
+      "counterpart_fraction": 0.45454545454545453,
+      "claim_count": 20,
+      "amount_thb": 157997.8,
+      "betweenness": 0.001775004905842691,
+      "community_id": 8
+    },
+    {
+      "node_id": "E078",
+      "node_type": "Employee",
+      "unique_counterparties": 19,
+      "counterpart_fraction": 0.5757575757575758,
+      "claim_count": 24,
+      "amount_thb": 158769.36,
+      "betweenness": 0.0028313348250766945,
+      "community_id": 1
+    },
+    {
+      "node_id": "E079",
+      "node_type": "Employee",
+      "unique_counterparties": 16,
+      "counterpart_fraction": 0.48484848484848486,
+      "claim_count": 22,
+      "amount_thb": 135015.4,
+      "betweenness": 0.0019944658491390975,
+      "community_id": 1
+    },
+    {
+      "node_id": "E080",
+      "node_type": "Employee",
+      "unique_counterparties": 15,
+      "counterpart_fraction": 0.45454545454545453,
+      "claim_count": 20,
+      "amount_thb": 144347.32,
+      "betweenness": 0.0016952695995507672,
+      "community_id": 7
+    },
+    {
+      "node_id": "E081",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 17,
+      "amount_thb": 96674.98,
+      "betweenness": 0.0015249531082223247,
+      "community_id": 4
+    },
+    {
+      "node_id": "E082",
+      "node_type": "Employee",
+      "unique_counterparties": 17,
+      "counterpart_fraction": 0.5151515151515151,
+      "claim_count": 19,
+      "amount_thb": 135481.46,
+      "betweenness": 0.0023021061962318493,
+      "community_id": 8
+    },
+    {
+      "node_id": "E083",
+      "node_type": "Employee",
+      "unique_counterparties": 17,
+      "counterpart_fraction": 0.5151515151515151,
+      "claim_count": 23,
+      "amount_thb": 206415.36,
+      "betweenness": 0.0023268690447135567,
+      "community_id": 3
+    },
+    {
+      "node_id": "E084",
+      "node_type": "Employee",
+      "unique_counterparties": 15,
+      "counterpart_fraction": 0.45454545454545453,
+      "claim_count": 28,
+      "amount_thb": 232149.97,
+      "betweenness": 0.00182917432978353,
+      "community_id": 8
+    },
+    {
+      "node_id": "E085",
+      "node_type": "Employee",
+      "unique_counterparties": 12,
+      "counterpart_fraction": 0.36363636363636365,
+      "claim_count": 12,
+      "amount_thb": 79509.75,
+      "betweenness": 0.0010799836685480644,
+      "community_id": 2
+    },
+    {
+      "node_id": "E086",
+      "node_type": "Employee",
+      "unique_counterparties": 17,
+      "counterpart_fraction": 0.5151515151515151,
+      "claim_count": 33,
+      "amount_thb": 247074.94,
+      "betweenness": 0.0022983967851615008,
+      "community_id": 1
+    },
+    {
+      "node_id": "E087",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 16,
+      "amount_thb": 119944.38,
+      "betweenness": 0.0013106192930978494,
+      "community_id": 2
+    },
+    {
+      "node_id": "E088",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 17,
+      "amount_thb": 100553.98,
+      "betweenness": 0.001302407679615363,
+      "community_id": 2
+    },
+    {
+      "node_id": "E089",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 21,
+      "amount_thb": 200093.8,
+      "betweenness": 0.0013085308265902307,
+      "community_id": 6
+    },
+    {
+      "node_id": "E090",
+      "node_type": "Employee",
+      "unique_counterparties": 9,
+      "counterpart_fraction": 0.2727272727272727,
+      "claim_count": 12,
+      "amount_thb": 128131.13,
+      "betweenness": 0.000605249396187533,
+      "community_id": 6
+    },
+    {
+      "node_id": "E091",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 15,
+      "amount_thb": 182276.09,
+      "betweenness": 0.0012786183998854629,
+      "community_id": 1
+    },
+    {
+      "node_id": "E092",
+      "node_type": "Employee",
+      "unique_counterparties": 17,
+      "counterpart_fraction": 0.5151515151515151,
+      "claim_count": 24,
+      "amount_thb": 287611.37,
+      "betweenness": 0.0022889366200738504,
+      "community_id": 1
+    },
+    {
+      "node_id": "E093",
+      "node_type": "Employee",
+      "unique_counterparties": 17,
+      "counterpart_fraction": 0.5151515151515151,
+      "claim_count": 23,
+      "amount_thb": 217030.66,
+      "betweenness": 0.0022449674901377573,
+      "community_id": 7
+    },
+    {
+      "node_id": "E094",
+      "node_type": "Employee",
+      "unique_counterparties": 16,
+      "counterpart_fraction": 0.48484848484848486,
+      "claim_count": 20,
+      "amount_thb": 212053.29,
+      "betweenness": 0.0020075748862775837,
+      "community_id": 1
+    },
+    {
+      "node_id": "E095",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 23,
+      "amount_thb": 253614.18,
+      "betweenness": 0.0014716986224610463,
+      "community_id": 1
+    },
+    {
+      "node_id": "E096",
+      "node_type": "Employee",
+      "unique_counterparties": 15,
+      "counterpart_fraction": 0.45454545454545453,
+      "claim_count": 18,
+      "amount_thb": 128254.02,
+      "betweenness": 0.0017330637172786156,
+      "community_id": 6
+    },
+    {
+      "node_id": "E097",
+      "node_type": "Employee",
+      "unique_counterparties": 15,
+      "counterpart_fraction": 0.45454545454545453,
+      "claim_count": 21,
+      "amount_thb": 140668.1,
+      "betweenness": 0.0017200703505418481,
+      "community_id": 2
+    },
+    {
+      "node_id": "E098",
+      "node_type": "Employee",
+      "unique_counterparties": 12,
+      "counterpart_fraction": 0.36363636363636365,
+      "claim_count": 14,
+      "amount_thb": 111264.79,
+      "betweenness": 0.0010755286214514887,
+      "community_id": 2
+    },
+    {
+      "node_id": "E099",
+      "node_type": "Employee",
+      "unique_counterparties": 11,
+      "counterpart_fraction": 0.3333333333333333,
+      "claim_count": 14,
+      "amount_thb": 97457.5,
+      "betweenness": 0.0009166982126819975,
+      "community_id": 3
+    },
+    {
+      "node_id": "E100",
+      "node_type": "Employee",
+      "unique_counterparties": 10,
+      "counterpart_fraction": 0.30303030303030304,
+      "claim_count": 15,
+      "amount_thb": 99424.51,
+      "betweenness": 0.0007863998583246679,
+      "community_id": 4
+    },
+    {
+      "node_id": "E101",
+      "node_type": "Employee",
+      "unique_counterparties": 8,
+      "counterpart_fraction": 0.24242424242424243,
+      "claim_count": 8,
+      "amount_thb": 48292.46,
+      "betweenness": 0.00046779303299108294,
+      "community_id": 2
+    },
+    {
+      "node_id": "E102",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 21,
+      "amount_thb": 233925.98,
+      "betweenness": 0.0014845655832608365,
+      "community_id": 1
+    },
+    {
+      "node_id": "E103",
+      "node_type": "Employee",
+      "unique_counterparties": 16,
+      "counterpart_fraction": 0.48484848484848486,
+      "claim_count": 20,
+      "amount_thb": 157715.46,
+      "betweenness": 0.0020616022195639174,
+      "community_id": 4
+    },
+    {
+      "node_id": "E104",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 16,
+      "amount_thb": 85099.56,
+      "betweenness": 0.003959184291023708,
+      "community_id": 1
+    },
+    {
+      "node_id": "E105",
+      "node_type": "Employee",
+      "unique_counterparties": 11,
+      "counterpart_fraction": 0.3333333333333333,
+      "claim_count": 17,
+      "amount_thb": 140806.24,
+      "betweenness": 0.0009329525586911199,
+      "community_id": 1
+    },
+    {
+      "node_id": "E106",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 17,
+      "amount_thb": 142141.4,
+      "betweenness": 0.0012861450032383961,
+      "community_id": 1
+    },
+    {
+      "node_id": "E107",
+      "node_type": "Employee",
+      "unique_counterparties": 12,
+      "counterpart_fraction": 0.36363636363636365,
+      "claim_count": 16,
+      "amount_thb": 115599.79,
+      "betweenness": 0.0011729931761566771,
+      "community_id": 3
+    },
+    {
+      "node_id": "E108",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 26,
+      "amount_thb": 173913.8,
+      "betweenness": 0.002575268567493395,
+      "community_id": 5
+    },
+    {
+      "node_id": "E109",
+      "node_type": "Employee",
+      "unique_counterparties": 19,
+      "counterpart_fraction": 0.5757575757575758,
+      "claim_count": 31,
+      "amount_thb": 295981.23,
+      "betweenness": 0.002843729232412934,
+      "community_id": 2
+    },
+    {
+      "node_id": "E110",
+      "node_type": "Employee",
+      "unique_counterparties": 16,
+      "counterpart_fraction": 0.48484848484848486,
+      "claim_count": 22,
+      "amount_thb": 208264.49,
+      "betweenness": 0.0020097333778408603,
+      "community_id": 3
+    },
+    {
+      "node_id": "E111",
+      "node_type": "Employee",
+      "unique_counterparties": 13,
+      "counterpart_fraction": 0.3939393939393939,
+      "claim_count": 23,
+      "amount_thb": 190305.87,
+      "betweenness": 0.001265011236727843,
+      "community_id": 6
+    },
+    {
+      "node_id": "E112",
+      "node_type": "Employee",
+      "unique_counterparties": 16,
+      "counterpart_fraction": 0.48484848484848486,
+      "claim_count": 20,
+      "amount_thb": 172445.17,
+      "betweenness": 0.001979503408461444,
+      "community_id": 8
+    },
+    {
+      "node_id": "E113",
+      "node_type": "Employee",
+      "unique_counterparties": 15,
+      "counterpart_fraction": 0.45454545454545453,
+      "claim_count": 17,
+      "amount_thb": 224766.58,
+      "betweenness": 0.0017625493758959266,
+      "community_id": 3
+    },
+    {
+      "node_id": "E114",
+      "node_type": "Employee",
+      "unique_counterparties": 21,
+      "counterpart_fraction": 0.6363636363636364,
+      "claim_count": 34,
+      "amount_thb": 233298.64,
+      "betweenness": 0.003607738051231996,
+      "community_id": 3
+    },
+    {
+      "node_id": "E115",
+      "node_type": "Employee",
+      "unique_counterparties": 8,
+      "counterpart_fraction": 0.24242424242424243,
+      "claim_count": 11,
+      "amount_thb": 60382.33,
+      "betweenness": 0.00042454773874407535,
+      "community_id": 1
+    },
+    {
+      "node_id": "E116",
+      "node_type": "Employee",
+      "unique_counterparties": 20,
+      "counterpart_fraction": 0.6060606060606061,
+      "claim_count": 28,
+      "amount_thb": 253697.08,
+      "betweenness": 0.003208653500976185,
+      "community_id": 3
+    },
+    {
+      "node_id": "E117",
+      "node_type": "Employee",
+      "unique_counterparties": 18,
+      "counterpart_fraction": 0.5454545454545454,
+      "claim_count": 21,
+      "amount_thb": 201714.76,
+      "betweenness": 0.002554117729533123,
+      "community_id": 5
+    },
+    {
+      "node_id": "E118",
+      "node_type": "Employee",
+      "unique_counterparties": 12,
+      "counterpart_fraction": 0.36363636363636365,
+      "claim_count": 15,
+      "amount_thb": 91318.07,
+      "betweenness": 0.0011043605293389585,
+      "community_id": 2
+    },
+    {
+      "node_id": "E119",
+      "node_type": "Employee",
+      "unique_counterparties": 19,
+      "counterpart_fraction": 0.5757575757575758,
+      "claim_count": 23,
+      "amount_thb": 177523.12,
+      "betweenness": 0.0029147962789496844,
+      "community_id": 2
+    },
+    {
+      "node_id": "E120",
+      "node_type": "Employee",
+      "unique_counterparties": 14,
+      "counterpart_fraction": 0.42424242424242425,
+      "claim_count": 19,
+      "amount_thb": 87955.65,
+      "betweenness": 0.0015335268218426685,
+      "community_id": 8
+    },
+    {
+      "node_id": "V001",
+      "node_type": "Merchant",
+      "unique_counterparties": 69,
+      "counterpart_fraction": 0.6052631578947368,
+      "claim_count": 88,
+      "amount_thb": 695410.51,
+      "betweenness": 0.04059858824521842,
+      "community_id": 6
+    },
+    {
+      "node_id": "V002",
+      "node_type": "Merchant",
+      "unique_counterparties": 55,
+      "counterpart_fraction": 0.4824561403508772,
+      "claim_count": 76,
+      "amount_thb": 679606.84,
+      "betweenness": 0.0257456250725645,
+      "community_id": 8
+    },
+    {
+      "node_id": "V003",
+      "node_type": "Merchant",
+      "unique_counterparties": 54,
+      "counterpart_fraction": 0.47368421052631576,
+      "claim_count": 77,
+      "amount_thb": 617406.06,
+      "betweenness": 0.02382270115938304,
+      "community_id": 8
+    },
+    {
+      "node_id": "V004",
+      "node_type": "Merchant",
+      "unique_counterparties": 49,
+      "counterpart_fraction": 0.4298245614035088,
+      "claim_count": 65,
+      "amount_thb": 582315.27,
+      "betweenness": 0.019782375415754432,
+      "community_id": 3
+    },
+    {
+      "node_id": "V005",
+      "node_type": "Merchant",
+      "unique_counterparties": 52,
+      "counterpart_fraction": 0.45614035087719296,
+      "claim_count": 77,
+      "amount_thb": 636137.38,
+      "betweenness": 0.021594250372853584,
+      "community_id": 1
+    },
+    {
+      "node_id": "V006",
+      "node_type": "Merchant",
+      "unique_counterparties": 52,
+      "counterpart_fraction": 0.45614035087719296,
+      "claim_count": 76,
+      "amount_thb": 583715.54,
+      "betweenness": 0.02361817175468701,
+      "community_id": 5
+    },
+    {
+      "node_id": "V007",
+      "node_type": "Merchant",
+      "unique_counterparties": 49,
+      "counterpart_fraction": 0.4298245614035088,
+      "claim_count": 68,
+      "amount_thb": 600529.29,
+      "betweenness": 0.018723858357967763,
+      "community_id": 4
+    },
+    {
+      "node_id": "V008",
+      "node_type": "Merchant",
+      "unique_counterparties": 62,
+      "counterpart_fraction": 0.543859649122807,
+      "claim_count": 84,
+      "amount_thb": 607939.19,
+      "betweenness": 0.03198044129232718,
+      "community_id": 3
+    },
+    {
+      "node_id": "V009",
+      "node_type": "Merchant",
+      "unique_counterparties": 61,
+      "counterpart_fraction": 0.5350877192982456,
+      "claim_count": 76,
+      "amount_thb": 568687.64,
+      "betweenness": 0.03346478712204087,
+      "community_id": 1
+    },
+    {
+      "node_id": "V010",
+      "node_type": "Merchant",
+      "unique_counterparties": 60,
+      "counterpart_fraction": 0.5263157894736842,
+      "claim_count": 80,
+      "amount_thb": 609874.69,
+      "betweenness": 0.027672361555765183,
+      "community_id": 5
+    },
+    {
+      "node_id": "V011",
+      "node_type": "Merchant",
+      "unique_counterparties": 61,
+      "counterpart_fraction": 0.5350877192982456,
+      "claim_count": 87,
+      "amount_thb": 721292.38,
+      "betweenness": 0.03056229046252168,
+      "community_id": 1
+    },
+    {
+      "node_id": "V012",
+      "node_type": "Merchant",
+      "unique_counterparties": 54,
+      "counterpart_fraction": 0.47368421052631576,
+      "claim_count": 74,
+      "amount_thb": 472615.7,
+      "betweenness": 0.023422029431695933,
+      "community_id": 7
+    },
+    {
+      "node_id": "V013",
+      "node_type": "Merchant",
+      "unique_counterparties": 67,
+      "counterpart_fraction": 0.5877192982456141,
+      "claim_count": 91,
+      "amount_thb": 649487.42,
+      "betweenness": 0.03869221108373752,
+      "community_id": 2
+    },
+    {
+      "node_id": "V014",
+      "node_type": "Merchant",
+      "unique_counterparties": 63,
+      "counterpart_fraction": 0.5526315789473685,
+      "claim_count": 91,
+      "amount_thb": 716832.22,
+      "betweenness": 0.03340698781487718,
+      "community_id": 7
+    },
+    {
+      "node_id": "V015",
+      "node_type": "Merchant",
+      "unique_counterparties": 48,
+      "counterpart_fraction": 0.42105263157894735,
+      "claim_count": 73,
+      "amount_thb": 587166.94,
+      "betweenness": 0.017814117783411295,
+      "community_id": 1
+    },
+    {
+      "node_id": "V016",
+      "node_type": "Merchant",
+      "unique_counterparties": 51,
+      "counterpart_fraction": 0.4473684210526316,
+      "claim_count": 71,
+      "amount_thb": 505241.97,
+      "betweenness": 0.021911108462707607,
+      "community_id": 3
+    },
+    {
+      "node_id": "V017",
+      "node_type": "Merchant",
+      "unique_counterparties": 51,
+      "counterpart_fraction": 0.4473684210526316,
+      "claim_count": 70,
+      "amount_thb": 513666.44,
+      "betweenness": 0.021857417112155077,
+      "community_id": 6
+    },
+    {
+      "node_id": "V018",
+      "node_type": "Merchant",
+      "unique_counterparties": 62,
+      "counterpart_fraction": 0.543859649122807,
+      "claim_count": 79,
+      "amount_thb": 600695.24,
+      "betweenness": 0.03236194943192244,
+      "community_id": 5
+    },
+    {
+      "node_id": "V019",
+      "node_type": "Merchant",
+      "unique_counterparties": 52,
+      "counterpart_fraction": 0.45614035087719296,
+      "claim_count": 72,
+      "amount_thb": 656453.94,
+      "betweenness": 0.024050252513256844,
+      "community_id": 4
+    },
+    {
+      "node_id": "V020",
+      "node_type": "Merchant",
+      "unique_counterparties": 64,
+      "counterpart_fraction": 0.5614035087719298,
+      "claim_count": 98,
+      "amount_thb": 764593.79,
+      "betweenness": 0.03635226409834358,
+      "community_id": 4
+    },
+    {
+      "node_id": "V021",
+      "node_type": "Merchant",
+      "unique_counterparties": 66,
+      "counterpart_fraction": 0.5789473684210527,
+      "claim_count": 93,
+      "amount_thb": 886506.31,
+      "betweenness": 0.03460251651623384,
+      "community_id": 1
+    },
+    {
+      "node_id": "V022",
+      "node_type": "Merchant",
+      "unique_counterparties": 54,
+      "counterpart_fraction": 0.47368421052631576,
+      "claim_count": 70,
+      "amount_thb": 495677.11,
+      "betweenness": 0.0230238700012823,
+      "community_id": 2
+    },
+    {
+      "node_id": "V023",
+      "node_type": "Merchant",
+      "unique_counterparties": 48,
+      "counterpart_fraction": 0.42105263157894735,
+      "claim_count": 61,
+      "amount_thb": 529573.37,
+      "betweenness": 0.017703415166887452,
+      "community_id": 8
+    },
+    {
+      "node_id": "V024",
+      "node_type": "Merchant",
+      "unique_counterparties": 53,
+      "counterpart_fraction": 0.4649122807017544,
+      "claim_count": 78,
+      "amount_thb": 701014.86,
+      "betweenness": 0.023576528947010338,
+      "community_id": 1
+    },
+    {
+      "node_id": "V025",
+      "node_type": "Merchant",
+      "unique_counterparties": 62,
+      "counterpart_fraction": 0.543859649122807,
+      "claim_count": 89,
+      "amount_thb": 721460.72,
+      "betweenness": 0.032274340913061854,
+      "community_id": 6
+    },
+    {
+      "node_id": "V026",
+      "node_type": "Merchant",
+      "unique_counterparties": 55,
+      "counterpart_fraction": 0.4824561403508772,
+      "claim_count": 68,
+      "amount_thb": 524769.16,
+      "betweenness": 0.025196449743121067,
+      "community_id": 3
+    },
+    {
+      "node_id": "V027",
+      "node_type": "Merchant",
+      "unique_counterparties": 59,
+      "counterpart_fraction": 0.5175438596491229,
+      "claim_count": 73,
+      "amount_thb": 570222.84,
+      "betweenness": 0.030123183489299085,
+      "community_id": 2
+    },
+    {
+      "node_id": "V028",
+      "node_type": "Merchant",
+      "unique_counterparties": 53,
+      "counterpart_fraction": 0.4649122807017544,
+      "claim_count": 66,
+      "amount_thb": 688785.9,
+      "betweenness": 0.023261876474826682,
+      "community_id": 1
+    },
+    {
+      "node_id": "V029",
+      "node_type": "Merchant",
+      "unique_counterparties": 49,
+      "counterpart_fraction": 0.4298245614035088,
+      "claim_count": 65,
+      "amount_thb": 603423.56,
+      "betweenness": 0.019879587152823928,
+      "community_id": 5
+    },
+    {
+      "node_id": "V030",
+      "node_type": "Merchant",
+      "unique_counterparties": 59,
+      "counterpart_fraction": 0.5175438596491229,
+      "claim_count": 80,
+      "amount_thb": 557540.69,
+      "betweenness": 0.027925386886435866,
+      "community_id": 2
+    },
+    {
+      "node_id": "V031",
+      "node_type": "Merchant",
+      "unique_counterparties": 4,
+      "counterpart_fraction": 0.03508771929824561,
+      "claim_count": 24,
+      "amount_thb": 282226.9,
+      "betweenness": 8.809067843500152e-05,
+      "community_id": 7
+    },
+    {
+      "node_id": "V032",
+      "node_type": "Merchant",
+      "unique_counterparties": 4,
+      "counterpart_fraction": 0.03508771929824561,
+      "claim_count": 22,
+      "amount_thb": 235111.01,
+      "betweenness": 0.00010699760831735262,
+      "community_id": 7
+    },
+    {
+      "node_id": "V036",
+      "node_type": "Merchant",
+      "unique_counterparties": 1,
+      "counterpart_fraction": 0.008771929824561403,
+      "claim_count": 38,
+      "amount_thb": 288031.85,
+      "betweenness": 0.0,
+      "community_id": 9
+    }
+  ],
+  "community_summary": [
+    {
+      "community_id": 1,
+      "nodes": 35,
+      "employees": 28,
+      "merchants": 7,
+      "internal_edges": 130,
+      "internal_claims": 213,
+      "members": "E007;E013;E024;E033;E034;E035;E039;E041;E050;E051;E053;E060;E061;E062;E066;E075;E078;E079;E086;E091;E092;E094;E095;E102;E104;E105;E106;E115;V005;V009;V011;V015;V021;V024;V028"
+    },
+    {
+      "community_id": 2,
+      "nodes": 23,
+      "employees": 19,
+      "merchants": 4,
+      "internal_edges": 56,
+      "internal_claims": 97,
+      "members": "E010;E015;E029;E044;E045;E054;E057;E064;E067;E069;E085;E087;E088;E097;E098;E101;E109;E118;E119;V013;V022;V027;V030"
+    },
+    {
+      "community_id": 3,
+      "nodes": 19,
+      "employees": 15,
+      "merchants": 4,
+      "internal_edges": 48,
+      "internal_claims": 87,
+      "members": "E008;E014;E025;E032;E036;E055;E071;E073;E083;E099;E107;E110;E113;E114;E116;V004;V008;V016;V026"
+    },
+    {
+      "community_id": 4,
+      "nodes": 15,
+      "employees": 12,
+      "merchants": 3,
+      "internal_edges": 30,
+      "internal_claims": 60,
+      "members": "E011;E016;E022;E038;E040;E042;E068;E070;E072;E081;E100;E103;V007;V019;V020"
+    },
+    {
+      "community_id": 5,
+      "nodes": 15,
+      "employees": 11,
+      "merchants": 4,
+      "internal_edges": 35,
+      "internal_claims": 65,
+      "members": "E018;E031;E043;E046;E047;E049;E056;E063;E074;E108;E117;V006;V010;V018;V029"
+    },
+    {
+      "community_id": 6,
+      "nodes": 14,
+      "employees": 11,
+      "merchants": 3,
+      "internal_edges": 31,
+      "internal_claims": 56,
+      "members": "E012;E017;E021;E026;E048;E058;E059;E089;E090;E096;E111;V001;V017;V025"
+    },
+    {
+      "community_id": 7,
+      "nodes": 12,
+      "employees": 8,
+      "merchants": 4,
+      "internal_edges": 23,
+      "internal_claims": 78,
+      "members": "E009;E023;E028;E037;E052;E065;E080;E093;V012;V014;V031;V032"
+    },
+    {
+      "community_id": 8,
+      "nodes": 12,
+      "employees": 9,
+      "merchants": 3,
+      "internal_edges": 19,
+      "internal_claims": 46,
+      "members": "E019;E027;E030;E076;E077;E082;E084;E112;E120;V002;V003;V023"
+    },
+    {
+      "community_id": 9,
+      "nodes": 2,
+      "employees": 1,
+      "merchants": 1,
+      "internal_edges": 1,
+      "internal_claims": 38,
+      "members": "E020;V036"
+    }
+  ],
+  "focus_edge_records": [
+    {
+      "employee_id": "E009",
+      "merchant_id": "V031",
+      "claim_count": 8,
+      "amount_thb": 107883.18,
+      "claim_ids": "FC-00118;FC-00579;FC-00582;FC-01350;FC-01592;FC-01781;FC-01997;FC-02220",
+      "approver_ids": "E003;E004"
+    },
+    {
+      "employee_id": "E009",
+      "merchant_id": "V032",
+      "claim_count": 3,
+      "amount_thb": 52580.54,
+      "claim_ids": "FC-00267;FC-00270;FC-01131",
+      "approver_ids": "E004"
+    },
+    {
+      "employee_id": "E020",
+      "merchant_id": "V036",
+      "claim_count": 38,
+      "amount_thb": 288031.85,
+      "claim_ids": "FC-00064;FC-00099;FC-00108;FC-00128;FC-00179;FC-00385;FC-00423;FC-00469;FC-00472;FC-00519;FC-00576;FC-00642;FC-00709;FC-00861;FC-00981;FC-01000;FC-01016;FC-01019;FC-01021;FC-01031;FC-01045;FC-01215;FC-01220;FC-01267;FC-01383;FC-01434;FC-01447;FC-01490;FC-01559;FC-01721;FC-01797;FC-01883;FC-01969;FC-01985;FC-02084;FC-02087;FC-02252;FC-02364",
+      "approver_ids": "E001;E002;E003;E004;E005;E006;E007"
+    },
+    {
+      "employee_id": "E037",
+      "merchant_id": "V031",
+      "claim_count": 4,
+      "amount_thb": 40175.89,
+      "claim_ids": "FC-00081;FC-01341;FC-01778;FC-02139",
+      "approver_ids": "E004"
+    },
+    {
+      "employee_id": "E037",
+      "merchant_id": "V032",
+      "claim_count": 11,
+      "amount_thb": 124750.21,
+      "claim_ids": "FC-00008;FC-00496;FC-00588;FC-00706;FC-00845;FC-00979;FC-01205;FC-01396;FC-01561;FC-02059;FC-02325",
+      "approver_ids": "E001;E004"
+    },
+    {
+      "employee_id": "E065",
+      "merchant_id": "V031",
+      "claim_count": 11,
+      "amount_thb": 130846.43,
+      "claim_ids": "FC-00021;FC-00540;FC-00672;FC-00902;FC-00927;FC-01295;FC-01325;FC-01367;FC-01657;FC-01698;FC-02103",
+      "approver_ids": "E004;E005"
+    },
+    {
+      "employee_id": "E065",
+      "merchant_id": "V032",
+      "claim_count": 7,
+      "amount_thb": 56944.27,
+      "claim_ids": "FC-00051;FC-00142;FC-00201;FC-00282;FC-00313;FC-00868;FC-01068",
+      "approver_ids": "E004"
+    }
+  ],
+  "focus_paths": [
+    {
+      "employee_a": "E009",
+      "via_merchant": "V031",
+      "employee_b": "E037",
+      "left_claim_count": 8,
+      "right_claim_count": 4,
+      "left_claim_ids": "FC-00118;FC-00579;FC-00582;FC-01350;FC-01592;FC-01781;FC-01997;FC-02220",
+      "right_claim_ids": "FC-00081;FC-01341;FC-01778;FC-02139",
+      "interpretation": "Both employees claimed this merchant. No direct employee relationship is established."
+    },
+    {
+      "employee_a": "E009",
+      "via_merchant": "V031",
+      "employee_b": "E065",
+      "left_claim_count": 8,
+      "right_claim_count": 11,
+      "left_claim_ids": "FC-00118;FC-00579;FC-00582;FC-01350;FC-01592;FC-01781;FC-01997;FC-02220",
+      "right_claim_ids": "FC-00021;FC-00540;FC-00672;FC-00902;FC-00927;FC-01295;FC-01325;FC-01367;FC-01657;FC-01698;FC-02103",
+      "interpretation": "Both employees claimed this merchant. No direct employee relationship is established."
+    },
+    {
+      "employee_a": "E037",
+      "via_merchant": "V031",
+      "employee_b": "E065",
+      "left_claim_count": 4,
+      "right_claim_count": 11,
+      "left_claim_ids": "FC-00081;FC-01341;FC-01778;FC-02139",
+      "right_claim_ids": "FC-00021;FC-00540;FC-00672;FC-00902;FC-00927;FC-01295;FC-01325;FC-01367;FC-01657;FC-01698;FC-02103",
+      "interpretation": "Both employees claimed this merchant. No direct employee relationship is established."
+    },
+    {
+      "employee_a": "E009",
+      "via_merchant": "V032",
+      "employee_b": "E037",
+      "left_claim_count": 3,
+      "right_claim_count": 11,
+      "left_claim_ids": "FC-00267;FC-00270;FC-01131",
+      "right_claim_ids": "FC-00008;FC-00496;FC-00588;FC-00706;FC-00845;FC-00979;FC-01205;FC-01396;FC-01561;FC-02059;FC-02325",
+      "interpretation": "Both employees claimed this merchant. No direct employee relationship is established."
+    },
+    {
+      "employee_a": "E009",
+      "via_merchant": "V032",
+      "employee_b": "E065",
+      "left_claim_count": 3,
+      "right_claim_count": 7,
+      "left_claim_ids": "FC-00267;FC-00270;FC-01131",
+      "right_claim_ids": "FC-00051;FC-00142;FC-00201;FC-00282;FC-00313;FC-00868;FC-01068",
+      "interpretation": "Both employees claimed this merchant. No direct employee relationship is established."
+    },
+    {
+      "employee_a": "E037",
+      "via_merchant": "V032",
+      "employee_b": "E065",
+      "left_claim_count": 11,
+      "right_claim_count": 7,
+      "left_claim_ids": "FC-00008;FC-00496;FC-00588;FC-00706;FC-00845;FC-00979;FC-01205;FC-01396;FC-01561;FC-02059;FC-02325",
+      "right_claim_ids": "FC-00051;FC-00142;FC-00201;FC-00282;FC-00313;FC-00868;FC-01068",
+      "interpretation": "Both employees claimed this merchant. No direct employee relationship is established."
+    }
+  ],
+  "training_source_sha256": "84fa3f5d9fb324d45e1295e3ed22e8735102bbccdbf8b4a735ac238552edd1ef",
+  "no_predictive_graph_claim": "No graph-derived fraud score, label propagation, link prediction, ownership or funds-flow inference. Existing classifiers unchanged.",
+  "checks": [
+    {
+      "check": "Training snapshot has 2400 claims",
+      "passed": true
+    },
+    {
+      "check": "Graph sources exclude labels and scores",
+      "passed": true
+    },
+    {
+      "check": "Graph is bipartite",
+      "passed": true
+    },
+    {
+      "check": "Each source claim belongs to one graph edge",
+      "passed": true
+    },
+    {
+      "check": "Graph amounts reconcile to training claims",
+      "passed": true
+    },
+    {
+      "check": "Communities partition observed nodes",
+      "passed": true
+    },
+    {
+      "check": "Focus selection has source edges",
+      "passed": true
+    },
+    {
+      "check": "Every two-hop path uses observed links",
+      "passed": true
+    }
+  ]
+}

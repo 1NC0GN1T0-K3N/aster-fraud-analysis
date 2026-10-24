@@ -1,0 +1,24 @@
+{
+  "raw_claims": 4812,
+  "production_claims": 4800,
+  "quarantined_claims": 12,
+  "raw_numeric_thb": 38545494.32,
+  "production_thb": 38484035.58,
+  "quarantine_numeric_thb": 61458.74,
+  "unparseable_amount_rows": 1,
+  "row_difference": 0,
+  "amount_difference_thb": 0.0,
+  "master_counts": {
+    "employees": 120,
+    "merchants": 36,
+    "trips": 4800,
+    "approvals": 4800
+  },
+  "source_hashes": {
+    "approvals.csv": "6056d89dd989dd9148905bbaee4f3792352b8d98efea9cb99d5ca9cd0c5239db",
+    "employees.csv": "e3b4025678fa67fba637fbe9cbad4c93953d8ef8b92724362758cbc225959063",
+    "expense_claims.csv": "66a240e21f7c8b93cfd9f0d71cb08b67eb6fe53075d495d2aa940e38548ae986",
+    "merchants.csv": "98019773e9c4d721da084ceac04d0dac9014c4d5cfc547d44259f03f966504a0",
+    "trips.csv": "9136b5efa507a6e6ca9f0faf3b466f69d1396a1b71ea9f948cce211b6d84900f"
+  }
+}

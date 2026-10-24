@@ -1,0 +1,24 @@
+{
+  "case_title": "Travel and expense reimbursement fraud at Aster Field Services",
+  "case_slug": "Expense_Fraud",
+  "company": "Aster Field Services",
+  "case_type": "expense_reimbursement",
+  "target_employee_id": "E009",
+  "target_merchant_id": "V011",
+  "analysis_category": "Hotel",
+  "policy_caps": {
+    "Hotel": 9000,
+    "Flight": 20000,
+    "Meal": 2500,
+    "Taxi": 1500
+  },
+  "data_files": {
+    "employees": "employees.csv",
+    "vendors": "merchants.csv",
+    "invoices": "expense_claims.csv"
+  },
+  "schema": "midterm_expense",
+  "year": 2026,
+  "coverage": "Complete fictitious Jan-Dec 2026 expense ledger",
+  "notes": "Generic accounting columns invoice_id, invoice_number, vendor_id and po_id represent claim ID, receipt number, merchant ID and trip reference. This is a new employee-expense case, not procurement splitting."
+}

@@ -1,0 +1,1507 @@
+{
+  "project": "Travel and expense reimbursement fraud at Aster Field Services",
+  "controls": {
+    "tables": {
+      "employees": {
+        "raw": 13,
+        "production": 12,
+        "quarantined": 1,
+        "difference": 0,
+        "pass": true
+      },
+      "vendors": {
+        "raw": 15,
+        "production": 14,
+        "quarantined": 1,
+        "difference": 0,
+        "pass": true
+      },
+      "invoices": {
+        "raw": 176,
+        "production": 169,
+        "quarantined": 7,
+        "difference": 0,
+        "pass": true
+      }
+    },
+    "invoice_amounts": {
+      "raw_numeric": 1067300,
+      "production": 1053800,
+      "quarantined_numeric": 13500,
+      "unparseable_rows": 1,
+      "difference": 0,
+      "pass": true
+    },
+    "staging_invoice_rows": 176,
+    "production_invoice_rows": 169,
+    "quarantined_rows": 7,
+    "source_to_staging": {
+      "employees": {
+        "landing_rows": 13,
+        "staging_rows": 13,
+        "pass": true
+      },
+      "vendors": {
+        "landing_rows": 15,
+        "staging_rows": 15,
+        "pass": true
+      },
+      "invoices": {
+        "landing_rows": 176,
+        "staging_rows": 176,
+        "pass": true
+      }
+    }
+  },
+  "profiles": {
+    "raw": {
+      "employees": {
+        "rows": 13,
+        "distinct_keys": 13,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "emp_id": 0,
+          "emp_name": 0,
+          "department": 0,
+          "role": 0,
+          "bank_account": 1,
+          "address": 1,
+          "approval_limit_thb": 0,
+          "active_flag": 0
+        },
+        "amount": {
+          "numeric_rows": 12,
+          "invalid_rows": 1,
+          "min": 5000,
+          "max": 25000,
+          "mean": 6666.666666666667,
+          "median": 5000,
+          "mad": 0,
+          "q1": 5000,
+          "q3": 5000,
+          "iqr": 0,
+          "lower_fence": 5000,
+          "upper_fence": 5000,
+          "negative_rows": 0
+        },
+        "date_coverage": []
+      },
+      "vendors": {
+        "rows": 15,
+        "distinct_keys": 15,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "vendor_id": 0,
+          "vendor_name": 0,
+          "category": 0,
+          "owner_name": 0,
+          "bank_account": 1,
+          "address": 1,
+          "registration_date": 0,
+          "risk_country": 0,
+          "active_flag": 0
+        },
+        "amount": {
+          "numeric_rows": 0,
+          "invalid_rows": 15,
+          "min": null,
+          "max": null,
+          "mean": null,
+          "median": null,
+          "mad": null,
+          "q1": null,
+          "q3": null,
+          "iqr": null,
+          "lower_fence": null,
+          "upper_fence": null,
+          "negative_rows": 0
+        },
+        "date_coverage": []
+      },
+      "invoices": {
+        "rows": 176,
+        "distinct_keys": 174,
+        "duplicate_key_rows": 1,
+        "missing_by_field": {
+          "invoice_id": 1,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 175,
+          "invalid_rows": 1,
+          "min": -700,
+          "max": 18450,
+          "mean": 6098.857142857143,
+          "median": 5250,
+          "mad": 3600,
+          "q1": 1375,
+          "q3": 7525,
+          "iqr": 6150,
+          "lower_fence": -7850,
+          "upper_fence": 16750,
+          "negative_rows": 1
+        },
+        "date_coverage": [
+          "2026-01-08",
+          "2026-12-25"
+        ]
+      }
+    },
+    "production": {
+      "invoices": {
+        "rows": 169,
+        "distinct_keys": 169,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 169,
+          "invalid_rows": 0,
+          "min": 250,
+          "max": 18450,
+          "mean": 6235.502958579882,
+          "median": 5300,
+          "mad": 3600,
+          "q1": 1600,
+          "q3": 7550,
+          "iqr": 5950,
+          "lower_fence": -7325,
+          "upper_fence": 16475,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-01-08",
+          "2026-12-25"
+        ]
+      }
+    },
+    "monthly": [
+      {
+        "month": "2026-01",
+        "count": 13,
+        "amount_thb": 64400
+      },
+      {
+        "month": "2026-02",
+        "count": 13,
+        "amount_thb": 67100
+      },
+      {
+        "month": "2026-03",
+        "count": 13,
+        "amount_thb": 44850
+      },
+      {
+        "month": "2026-04",
+        "count": 13,
+        "amount_thb": 74450
+      },
+      {
+        "month": "2026-05",
+        "count": 13,
+        "amount_thb": 75650
+      },
+      {
+        "month": "2026-06",
+        "count": 13,
+        "amount_thb": 58450
+      },
+      {
+        "month": "2026-07",
+        "count": 13,
+        "amount_thb": 66350
+      },
+      {
+        "month": "2026-08",
+        "count": 16,
+        "amount_thb": 116700
+      },
+      {
+        "month": "2026-09",
+        "count": 16,
+        "amount_thb": 147000
+      },
+      {
+        "month": "2026-10",
+        "count": 16,
+        "amount_thb": 144100
+      },
+      {
+        "month": "2026-11",
+        "count": 16,
+        "amount_thb": 126300
+      },
+      {
+        "month": "2026-12",
+        "count": 14,
+        "amount_thb": 68450
+      }
+    ],
+    "by_vendor": [
+      {
+        "vendor_id": "V001",
+        "category": "Hotel",
+        "rows": 28,
+        "distinct_keys": 28,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 28,
+          "invalid_rows": 0,
+          "min": 3850,
+          "max": 7600,
+          "mean": 5901.785714285715,
+          "median": 5850,
+          "mad": 875,
+          "q1": 5075,
+          "q3": 6775,
+          "iqr": 1700,
+          "lower_fence": 2525,
+          "upper_fence": 9325,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-01-08",
+          "2026-12-14"
+        ]
+      },
+      {
+        "vendor_id": "V002",
+        "category": "Hotel",
+        "rows": 21,
+        "distinct_keys": 21,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 21,
+          "invalid_rows": 0,
+          "min": 3600,
+          "max": 7750,
+          "mean": 5623.809523809524,
+          "median": 5700,
+          "mad": 1000,
+          "q1": 4600,
+          "q3": 6650,
+          "iqr": 2050,
+          "lower_fence": 1525,
+          "upper_fence": 9725,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-01-12",
+          "2026-12-15"
+        ]
+      },
+      {
+        "vendor_id": "V003",
+        "category": "Hotel",
+        "rows": 21,
+        "distinct_keys": 21,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 21,
+          "invalid_rows": 0,
+          "min": 4200,
+          "max": 7650,
+          "mean": 6035.714285714285,
+          "median": 6250,
+          "mad": 1000,
+          "q1": 4950,
+          "q3": 7200,
+          "iqr": 2250,
+          "lower_fence": 1575,
+          "upper_fence": 10575,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-01-12",
+          "2026-12-17"
+        ]
+      },
+      {
+        "vendor_id": "V004",
+        "category": "Flight",
+        "rows": 8,
+        "distinct_keys": 8,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 8,
+          "invalid_rows": 0,
+          "min": 7550,
+          "max": 16800,
+          "mean": 11881.25,
+          "median": 11650,
+          "mad": 2300,
+          "q1": 9575,
+          "q3": 13675,
+          "iqr": 4100,
+          "lower_fence": 3425,
+          "upper_fence": 19825,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-01-26",
+          "2026-12-21"
+        ]
+      },
+      {
+        "vendor_id": "V005",
+        "category": "Flight",
+        "rows": 8,
+        "distinct_keys": 8,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 8,
+          "invalid_rows": 0,
+          "min": 7650,
+          "max": 16700,
+          "mean": 12862.5,
+          "median": 13150,
+          "mad": 2225,
+          "q1": 11150,
+          "q3": 15287.5,
+          "iqr": 4137.5,
+          "lower_fence": 4943.75,
+          "upper_fence": 21493.75,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-02-17",
+          "2026-12-21"
+        ]
+      },
+      {
+        "vendor_id": "V006",
+        "category": "Taxi",
+        "rows": 8,
+        "distinct_keys": 8,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 8,
+          "invalid_rows": 0,
+          "min": 650,
+          "max": 1150,
+          "mean": 887.5,
+          "median": 850,
+          "mad": 175,
+          "q1": 737.5,
+          "q3": 1062.5,
+          "iqr": 325,
+          "lower_fence": 250,
+          "upper_fence": 1550,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-02-19",
+          "2026-12-23"
+        ]
+      },
+      {
+        "vendor_id": "V007",
+        "category": "Meal",
+        "rows": 10,
+        "distinct_keys": 10,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 10,
+          "invalid_rows": 0,
+          "min": 500,
+          "max": 1950,
+          "mean": 1520,
+          "median": 1625,
+          "mad": 300,
+          "q1": 1337.5,
+          "q3": 1900,
+          "iqr": 562.5,
+          "lower_fence": 493.75,
+          "upper_fence": 2743.75,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-02-23",
+          "2026-12-25"
+        ]
+      },
+      {
+        "vendor_id": "V008",
+        "category": "Taxi",
+        "rows": 8,
+        "distinct_keys": 8,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 8,
+          "invalid_rows": 0,
+          "min": 300,
+          "max": 1250,
+          "mean": 850,
+          "median": 900,
+          "mad": 125,
+          "q1": 775,
+          "q3": 1012.5,
+          "iqr": 237.5,
+          "lower_fence": 418.75,
+          "upper_fence": 1368.75,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-02-23",
+          "2026-11-11"
+        ]
+      },
+      {
+        "vendor_id": "V009",
+        "category": "Meal",
+        "rows": 8,
+        "distinct_keys": 8,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 8,
+          "invalid_rows": 0,
+          "min": 450,
+          "max": 2050,
+          "mean": 1568.75,
+          "median": 1675,
+          "mad": 300,
+          "q1": 1437.5,
+          "q3": 1962.5,
+          "iqr": 525,
+          "lower_fence": 650,
+          "upper_fence": 2750,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-01-09",
+          "2026-11-13"
+        ]
+      },
+      {
+        "vendor_id": "V010",
+        "category": "Flight",
+        "rows": 8,
+        "distinct_keys": 8,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 8,
+          "invalid_rows": 0,
+          "min": 8100,
+          "max": 15500,
+          "mean": 12118.75,
+          "median": 12625,
+          "mad": 1225,
+          "q1": 10837.5,
+          "q3": 13287.5,
+          "iqr": 2450,
+          "lower_fence": 7162.5,
+          "upper_fence": 16962.5,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-01-12",
+          "2026-11-16"
+        ]
+      },
+      {
+        "vendor_id": "V011",
+        "category": "Hotel",
+        "rows": 16,
+        "distinct_keys": 16,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 16,
+          "invalid_rows": 0,
+          "min": 16800,
+          "max": 18450,
+          "mean": 17625,
+          "median": 17625,
+          "mad": 350,
+          "q1": 17312.5,
+          "q3": 17937.5,
+          "iqr": 625,
+          "lower_fence": 16375,
+          "upper_fence": 18875,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-08-06",
+          "2026-11-15"
+        ]
+      },
+      {
+        "vendor_id": "V012",
+        "category": "Meal",
+        "rows": 8,
+        "distinct_keys": 8,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 8,
+          "invalid_rows": 0,
+          "min": 550,
+          "max": 2150,
+          "mean": 1225,
+          "median": 1125,
+          "mad": 400,
+          "q1": 812.5,
+          "q3": 1475,
+          "iqr": 662.5,
+          "lower_fence": -181.25,
+          "upper_fence": 2468.75,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-01-13",
+          "2026-11-17"
+        ]
+      },
+      {
+        "vendor_id": "V013",
+        "category": "Taxi",
+        "rows": 8,
+        "distinct_keys": 8,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 8,
+          "invalid_rows": 0,
+          "min": 250,
+          "max": 1250,
+          "mean": 581.25,
+          "median": 475,
+          "mad": 175,
+          "q1": 300,
+          "q3": 725,
+          "iqr": 425,
+          "lower_fence": -337.5,
+          "upper_fence": 1362.5,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-01-15",
+          "2026-12-09"
+        ]
+      },
+      {
+        "vendor_id": "V014",
+        "category": "Meal",
+        "rows": 9,
+        "distinct_keys": 9,
+        "duplicate_key_rows": 0,
+        "missing_by_field": {
+          "invoice_id": 0,
+          "invoice_number": 0,
+          "vendor_id": 0,
+          "employee_id": 0,
+          "approver_id": 0,
+          "invoice_date": 0,
+          "amount_thb": 0,
+          "description": 0,
+          "po_id": 0,
+          "payment_method": 0,
+          "currency": 0
+        },
+        "amount": {
+          "numeric_rows": 9,
+          "invalid_rows": 0,
+          "min": 450,
+          "max": 1850,
+          "mean": 1188.888888888889,
+          "median": 1150,
+          "mad": 500,
+          "q1": 800,
+          "q3": 1650,
+          "iqr": 850,
+          "lower_fence": -475,
+          "upper_fence": 2925,
+          "negative_rows": 0
+        },
+        "date_coverage": [
+          "2026-01-19",
+          "2026-12-11"
+        ]
+      }
+    ]
+  },
+  "statistics": {
+    "target_employee_id": "E009",
+    "breakpoint": {
+      "method": "Exploratory transaction-amount breakpoint scan with Welch tests",
+      "correction": "Bonferroni within the target-vendor scan",
+      "minimum_transactions_per_side": 4,
+      "test_count": 16,
+      "best": {
+        "method": "Welch independent two-sample t-test",
+        "n_a": 7,
+        "n_b": 16,
+        "mean_a": 5400,
+        "mean_b": 17625,
+        "t": -72.36177359194744,
+        "df": 16.382601105615358,
+        "p_value": 5.772905520631539e-22,
+        "significant": true,
+        "status": "ok",
+        "split_date": "2026-08-06",
+        "n_old": 7,
+        "n_new": 16,
+        "adjusted_p_value": 9.236648833010463e-21
+      },
+      "candidates": [
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 7,
+          "n_b": 16,
+          "mean_a": 5400,
+          "mean_b": 17625,
+          "t": -72.36177359194744,
+          "df": 16.382601105615358,
+          "p_value": 5.772905520631539e-22,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-08-06",
+          "n_old": 7,
+          "n_new": 16,
+          "adjusted_p_value": 9.236648833010463e-21
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 6,
+          "n_b": 17,
+          "mean_a": 5325,
+          "mean_b": 16932.352941176472,
+          "t": -16.3365037432328,
+          "df": 16.827198739314934,
+          "p_value": 9.375735580820478e-12,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-07-12",
+          "n_old": 6,
+          "n_new": 17,
+          "adjusted_p_value": 1.5001176929312765e-10
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 5,
+          "n_b": 18,
+          "mean_a": 5250,
+          "mean_b": 16308.333333333334,
+          "t": -12.082005342761752,
+          "df": 17.452215863024172,
+          "p_value": 6.599398912148414e-10,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-06-12",
+          "n_old": 5,
+          "n_new": 18,
+          "adjusted_p_value": 1.0559038259437463e-08
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 4,
+          "n_b": 19,
+          "mean_a": 5175,
+          "mean_b": 15742.105263157895,
+          "t": -10.218153616981759,
+          "df": 18.311183905819036,
+          "p_value": 5.3909314300964105e-09,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-05-12",
+          "n_old": 4,
+          "n_new": 19,
+          "adjusted_p_value": 8.625490288154257e-08
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 8,
+          "n_b": 15,
+          "mean_a": 6825,
+          "mean_b": 17680,
+          "t": -7.574270476016526,
+          "df": 7.082527756852249,
+          "p_value": 0.0001215755315320549,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-08-09",
+          "n_old": 8,
+          "n_new": 15,
+          "adjusted_p_value": 0.0019452085045128784
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 9,
+          "n_b": 14,
+          "mean_a": 7955.555555555556,
+          "mean_b": 17728.571428571428,
+          "t": -5.761379160564112,
+          "df": 8.062264537418226,
+          "p_value": 0.0004114308001368655,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-08-12",
+          "n_old": 9,
+          "n_new": 14,
+          "adjusted_p_value": 0.006582892802189848
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 10,
+          "n_b": 13,
+          "mean_a": 8880,
+          "mean_b": 17769.23076923077,
+          "t": -5.001614150173609,
+          "df": 9.063360506174293,
+          "p_value": 0.0007218867816606785,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-08-15",
+          "n_old": 10,
+          "n_new": 13,
+          "adjusted_p_value": 0.011550188506570856
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 11,
+          "n_b": 12,
+          "mean_a": 9654.545454545454,
+          "mean_b": 17800,
+          "t": -4.562569205405462,
+          "df": 10.07540572303812,
+          "p_value": 0.0010182077505958003,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-09-06",
+          "n_old": 11,
+          "n_new": 12,
+          "adjusted_p_value": 0.016291324009532804
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 12,
+          "n_b": 11,
+          "mean_a": 10279.166666666666,
+          "mean_b": 17859.090909090908,
+          "t": -4.342840560752862,
+          "df": 11.0737034908313,
+          "p_value": 0.001151301125304619,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-09-09",
+          "n_old": 12,
+          "n_new": 11,
+          "adjusted_p_value": 0.018420818004873905
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 13,
+          "n_b": 10,
+          "mean_a": 10823.076923076924,
+          "mean_b": 17910,
+          "t": -4.180227942604285,
+          "df": 12.077585667069188,
+          "p_value": 0.0012587233134853403,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-09-12",
+          "n_old": 13,
+          "n_new": 10,
+          "adjusted_p_value": 0.020139573015765445
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 14,
+          "n_b": 9,
+          "mean_a": 11303.57142857143,
+          "mean_b": 17950,
+          "t": -4.04780678053823,
+          "df": 13.09264156450574,
+          "p_value": 0.001363148946482781,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-09-15",
+          "n_old": 14,
+          "n_new": 9,
+          "adjusted_p_value": 0.021810383143724497
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 17,
+          "n_b": 6,
+          "mean_a": 12423.529411764706,
+          "mean_b": 18100,
+          "t": -3.851751958787872,
+          "df": 16.122725146176002,
+          "p_value": 0.0013926804428678328,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-10-12",
+          "n_old": 17,
+          "n_new": 6,
+          "adjusted_p_value": 0.022282887085885324
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 18,
+          "n_b": 5,
+          "mean_a": 12727.777777777777,
+          "mean_b": 18140,
+          "t": -3.8025345113539,
+          "df": 17.16895424017145,
+          "p_value": 0.0014014631334190195,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-10-15",
+          "n_old": 18,
+          "n_new": 5,
+          "adjusted_p_value": 0.02242341013470431
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 16,
+          "n_b": 7,
+          "mean_a": 12093.75,
+          "mean_b": 18042.85714285714,
+          "t": -3.890710439821587,
+          "df": 15.11838723691375,
+          "p_value": 0.0014291533709904689,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-10-09",
+          "n_old": 16,
+          "n_new": 7,
+          "adjusted_p_value": 0.022866453935847502
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 15,
+          "n_b": 8,
+          "mean_a": 11733.333333333334,
+          "mean_b": 17975,
+          "t": -3.928348264324896,
+          "df": 14.128032390042646,
+          "p_value": 0.0014905490050298664,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-10-06",
+          "n_old": 15,
+          "n_new": 8,
+          "adjusted_p_value": 0.023848784080477862
+        },
+        {
+          "method": "Welch independent two-sample t-test",
+          "n_a": 19,
+          "n_b": 4,
+          "mean_a": 13010.526315789473,
+          "mean_b": 18150,
+          "t": -3.728400006448391,
+          "df": 18.31136210526452,
+          "p_value": 0.0015008921474610217,
+          "significant": true,
+          "status": "ok",
+          "split_date": "2026-11-06",
+          "n_old": 19,
+          "n_new": 4,
+          "adjusted_p_value": 0.024014274359376347
+        }
+      ],
+      "limitations": "Transactions may be correlated within monthly purchase clusters. P-values are approximate screening evidence, not independent proof of fraud."
+    },
+    "peer": {
+      "method": "Welch independent two-sample t-test",
+      "n_a": 16,
+      "n_b": 14,
+      "mean_a": 17625,
+      "mean_b": 6178.571428571428,
+      "t": 29.72205778335579,
+      "df": 15.607117511673815,
+      "p_value": 3.66430640249382e-15,
+      "significant": true,
+      "status": "ok",
+      "category": "Hotel",
+      "department": "Sales",
+      "peer_employee_ids": [
+        "E002",
+        "E005",
+        "E010"
+      ],
+      "window_start": "2026-08-06",
+      "window_end": "2026-11-15",
+      "window_selection": "Exploratory scan-selected window; same category and department.",
+      "limitations": "Repeated claims may be correlated. Trip duration and geography are unavailable; category/department matching does not ensure equivalent travel. Data-selected windows make this a screening comparison."
+    }
+  },
+  "summary": {
+    "alert_count": 42,
+    "critical_alerts": 1,
+    "review_exposure_thb": 285800,
+    "peer_t_statistic": 29.72205778335579,
+    "breakpoint_t_statistic": -72.36177359194744,
+    "category_median_thb": 6325,
+    "category_mad_thb": 1175,
+    "robust_z_status": "ok"
+  },
+  "monthly_spend_target": [
+    {
+      "month": "2026-01",
+      "amount_thb": 4950,
+      "transactions": 1
+    },
+    {
+      "month": "2026-02",
+      "amount_thb": 5100,
+      "transactions": 1
+    },
+    {
+      "month": "2026-03",
+      "amount_thb": 5250,
+      "transactions": 1
+    },
+    {
+      "month": "2026-04",
+      "amount_thb": 5400,
+      "transactions": 1
+    },
+    {
+      "month": "2026-05",
+      "amount_thb": 5550,
+      "transactions": 1
+    },
+    {
+      "month": "2026-06",
+      "amount_thb": 5700,
+      "transactions": 1
+    },
+    {
+      "month": "2026-07",
+      "amount_thb": 5850,
+      "transactions": 1
+    },
+    {
+      "month": "2026-08",
+      "amount_thb": 68400,
+      "transactions": 4
+    },
+    {
+      "month": "2026-09",
+      "amount_thb": 69800,
+      "transactions": 4
+    },
+    {
+      "month": "2026-10",
+      "amount_thb": 71200,
+      "transactions": 4
+    },
+    {
+      "month": "2026-11",
+      "amount_thb": 72600,
+      "transactions": 4
+    },
+    {
+      "month": "2026-12",
+      "amount_thb": 0,
+      "transactions": 0
+    }
+  ],
+  "alerts_by_model": [
+    {
+      "model": "Relational control",
+      "count": 1
+    },
+    {
+      "model": "Duplicate receipt rule",
+      "count": 5
+    },
+    {
+      "model": "Expense policy cap",
+      "count": 16
+    },
+    {
+      "model": "Segregation of duties",
+      "count": 4
+    },
+    {
+      "model": "Robust z-score",
+      "count": 16
+    }
+  ],
+  "alerts": [
+    {
+      "severity": "Critical",
+      "model": "Relational control",
+      "entity": "E009 / V011",
+      "amount_thb": null,
+      "reason": "Employee Ratchanon Kittisak and merchant Harbor Stay Bangkok share bank account KBANK-834271. Verify account ownership."
+    },
+    {
+      "severity": "High",
+      "model": "Duplicate receipt rule",
+      "entity": "CLM-0152, CLM-0153",
+      "amount_thb": 33800,
+      "reason": "The same merchant receipt HBR-8-REUSED appears in 2 separate reimbursement claims. Verify original receipts and any reversals."
+    },
+    {
+      "severity": "High",
+      "model": "Duplicate receipt rule",
+      "entity": "CLM-0156, CLM-0157",
+      "amount_thb": 34500,
+      "reason": "The same merchant receipt HBR-9-REUSED appears in 2 separate reimbursement claims. Verify original receipts and any reversals."
+    },
+    {
+      "severity": "High",
+      "model": "Duplicate receipt rule",
+      "entity": "CLM-0160, CLM-0161",
+      "amount_thb": 35200,
+      "reason": "The same merchant receipt HBR-10-REUSED appears in 2 separate reimbursement claims. Verify original receipts and any reversals."
+    },
+    {
+      "severity": "High",
+      "model": "Duplicate receipt rule",
+      "entity": "CLM-0164, CLM-0165",
+      "amount_thb": 35900,
+      "reason": "The same merchant receipt HBR-11-REUSED appears in 2 separate reimbursement claims. Verify original receipts and any reversals."
+    },
+    {
+      "severity": "High",
+      "model": "Duplicate receipt rule",
+      "entity": "CLM-0168, CLM-0169",
+      "amount_thb": 3800,
+      "reason": "The same merchant receipt BASIL-1226-58 appears in 2 separate reimbursement claims. Verify original receipts and any reversals."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0152",
+      "amount_thb": 16800,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0153",
+      "amount_thb": 17000,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Segregation of duties",
+      "entity": "CLM-0154",
+      "amount_thb": 17200,
+      "reason": "E009 submitted and approved the same claim."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0154",
+      "amount_thb": 17200,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0155",
+      "amount_thb": 17400,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0156",
+      "amount_thb": 17150,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0157",
+      "amount_thb": 17350,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Segregation of duties",
+      "entity": "CLM-0158",
+      "amount_thb": 17550,
+      "reason": "E009 submitted and approved the same claim."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0158",
+      "amount_thb": 17550,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0159",
+      "amount_thb": 17750,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0160",
+      "amount_thb": 17500,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0161",
+      "amount_thb": 17700,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Segregation of duties",
+      "entity": "CLM-0162",
+      "amount_thb": 17900,
+      "reason": "E009 submitted and approved the same claim."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0162",
+      "amount_thb": 17900,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0163",
+      "amount_thb": 18100,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0164",
+      "amount_thb": 17850,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0165",
+      "amount_thb": 18050,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Segregation of duties",
+      "entity": "CLM-0166",
+      "amount_thb": 18250,
+      "reason": "E009 submitted and approved the same claim."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0166",
+      "amount_thb": 18250,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "High",
+      "model": "Expense policy cap",
+      "entity": "CLM-0167",
+      "amount_thb": 18450,
+      "reason": "Hotel claim exceeds the fictitious THB 9000 per-claim policy cap. A documented exception may explain it."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0152",
+      "amount_thb": 16800,
+      "reason": "Modified robust z-score 6.01 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0153",
+      "amount_thb": 17000,
+      "reason": "Modified robust z-score 6.13 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0154",
+      "amount_thb": 17200,
+      "reason": "Modified robust z-score 6.24 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0155",
+      "amount_thb": 17400,
+      "reason": "Modified robust z-score 6.36 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0156",
+      "amount_thb": 17150,
+      "reason": "Modified robust z-score 6.21 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0157",
+      "amount_thb": 17350,
+      "reason": "Modified robust z-score 6.33 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0158",
+      "amount_thb": 17550,
+      "reason": "Modified robust z-score 6.44 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0159",
+      "amount_thb": 17750,
+      "reason": "Modified robust z-score 6.56 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0160",
+      "amount_thb": 17500,
+      "reason": "Modified robust z-score 6.41 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0161",
+      "amount_thb": 17700,
+      "reason": "Modified robust z-score 6.53 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0162",
+      "amount_thb": 17900,
+      "reason": "Modified robust z-score 6.64 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0163",
+      "amount_thb": 18100,
+      "reason": "Modified robust z-score 6.76 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0164",
+      "amount_thb": 17850,
+      "reason": "Modified robust z-score 6.62 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0165",
+      "amount_thb": 18050,
+      "reason": "Modified robust z-score 6.73 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0166",
+      "amount_thb": 18250,
+      "reason": "Modified robust z-score 6.85 within Hotel claims."
+    },
+    {
+      "severity": "Medium",
+      "model": "Robust z-score",
+      "entity": "CLM-0167",
+      "amount_thb": 18450,
+      "reason": "Modified robust z-score 6.96 within Hotel claims."
+    }
+  ],
+  "interpretation": "E009 and V011 warrant investigation of expense reimbursement, receipt reuse and approval conflicts. These screens do not establish fraud or intent."
+}
