@@ -1,0 +1,14 @@
+{
+  "name": "fraud-analytics-midterm",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Offline synthetic expense-fraud analysis; no npm dependencies",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test tools/pipeline.test.mjs",
+    "analyze": "node tools/run_analysis.mjs"
+  }
+}

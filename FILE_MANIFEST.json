@@ -1,0 +1,281 @@
+{
+  "release_date": "2026-10-25",
+  "scope": "All tracked release files except FILE_MANIFEST.json itself; generated reruns and environments excluded.",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 217,
+      "sha256": "821c89a594080779169abb3160c67768804776d78377fb09f46d5df2e0358024"
+    },
+    {
+      "path": "NOTICE.md",
+      "bytes": 1007,
+      "sha256": "bea6697daecd1af924786c3966c3fba8af08f20656b9cc4e6d129930dcd70610"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7021,
+      "sha256": "012465e2f874a08b4929627fab9a0ed258624a0091eea8d6c8a1aba39ae4f086"
+    },
+    {
+      "path": "VALIDATION.md",
+      "bytes": 1926,
+      "sha256": "7d2423ed2bac8500401916621ea1717a0fd2349de3c3ee4d3b73616fd568e04e"
+    },
+    {
+      "path": "docs/DATA_DICTIONARY.md",
+      "bytes": 4801,
+      "sha256": "8977d57d10ad9960510ae7d4275058707bcd057ce08a6414e4dfa0e3fa87ce11"
+    },
+    {
+      "path": "final/Fraud_Analytics.ipynb",
+      "bytes": 21826,
+      "sha256": "fb66f2c4c6cb47bad55fa1e45a136086ced1348da2d5b4e9588152b3d1086f4a"
+    },
+    {
+      "path": "final/README.md",
+      "bytes": 6806,
+      "sha256": "22579f0580d594c2cfaef543fb001d8a3269ab012165b89023455fe2cbdcc1f9"
+    },
+    {
+      "path": "final/data/landing/approvals.csv",
+      "bytes": 258400,
+      "sha256": "6056d89dd989dd9148905bbaee4f3792352b8d98efea9cb99d5ca9cd0c5239db"
+    },
+    {
+      "path": "final/data/landing/employees.csv",
+      "bytes": 6951,
+      "sha256": "e3b4025678fa67fba637fbe9cbad4c93953d8ef8b92724362758cbc225959063"
+    },
+    {
+      "path": "final/data/landing/expense_claims.csv",
+      "bytes": 673251,
+      "sha256": "66a240e21f7c8b93cfd9f0d71cb08b67eb6fe53075d495d2aa940e38548ae986"
+    },
+    {
+      "path": "final/data/landing/merchants.csv",
+      "bytes": 2239,
+      "sha256": "98019773e9c4d721da084ceac04d0dac9014c4d5cfc547d44259f03f966504a0"
+    },
+    {
+      "path": "final/data/landing/trips.csv",
+      "bytes": 177546,
+      "sha256": "9136b5efa507a6e6ca9f0faf3b466f69d1396a1b71ea9f948cce211b6d84900f"
+    },
+    {
+      "path": "final/data/production/expense_claims.csv",
+      "bytes": 694482,
+      "sha256": "bc6d718281a689dc93d011d09402329fe79e474fd2a90ebbaf25aa1f6bdee552"
+    },
+    {
+      "path": "final/reports/association_discovery.json",
+      "bytes": 3042,
+      "sha256": "35310f383cab7ce6c00fb53c7f5991b78060de32e37e10fa054cdb109115e9f9"
+    },
+    {
+      "path": "final/reports/association_rules.csv",
+      "bytes": 977,
+      "sha256": "568169715abb4653c4cafea9faed67d3d6f4553823c15ba8680c6253645ec74c"
+    },
+    {
+      "path": "final/reports/claim_scores.csv",
+      "bytes": 575576,
+      "sha256": "fa7bc6724e1d158f44238a5f23d51b0242aabdb5946775941bf0a75ff1635b87"
+    },
+    {
+      "path": "final/reports/features.csv",
+      "bytes": 532267,
+      "sha256": "130cc5df64042a3e06bb0aff1c940845f90ebb8763af029e212b4d5701f46757"
+    },
+    {
+      "path": "final/reports/figures/feature_importance.png",
+      "bytes": 56793,
+      "sha256": "1821ade166bd9c2b4e7ad9f9c668ccd6f039c4fa0f227082582e125f79dca9a3"
+    },
+    {
+      "path": "final/reports/figures/graph_relationships.png",
+      "bytes": 100797,
+      "sha256": "a121c332d9e6dc92d3ded5337de6389c934704eada04b30a7443de9b2ac952ac"
+    },
+    {
+      "path": "final/reports/figures/model_comparison.png",
+      "bytes": 32047,
+      "sha256": "cafa34eb08d4fab9a8c63fb4a948eadd449bec2d930c76e6a7cd44d99579be7b"
+    },
+    {
+      "path": "final/reports/figures/precision_recall.png",
+      "bytes": 55377,
+      "sha256": "aba5e37533d6d7a7c14f93437e355c8a340defd7252d329896d6881bcd505056"
+    },
+    {
+      "path": "final/reports/graph_analysis.json",
+      "bytes": 49982,
+      "sha256": "791585eb37739496d23535446212a53acdc702c213b63dcaaf3d5395ea4aed63"
+    },
+    {
+      "path": "final/reports/graph_communities.csv",
+      "bytes": 954,
+      "sha256": "ec4217a297f360c737d7d3b305a46a832d5333ef6ca6d68ec5938d12d2145485"
+    },
+    {
+      "path": "final/reports/graph_edges.csv",
+      "bytes": 65287,
+      "sha256": "187845e344a82fbe0ddeb19dff9ad18d5ce31ac636ca0d792287664483723545"
+    },
+    {
+      "path": "final/reports/graph_focus_edges.csv",
+      "bytes": 1042,
+      "sha256": "d1b96d9bf06aa2f13a170e6af398e0263e1e48c4db6f9496116c0378000223c3"
+    },
+    {
+      "path": "final/reports/graph_nodes.csv",
+      "bytes": 10765,
+      "sha256": "f64129aeb9be71160b4ea9adac89239cb69191e694455eabeffe8a1957a9db3d"
+    },
+    {
+      "path": "final/reports/graph_paths.csv",
+      "bytes": 1542,
+      "sha256": "4c603a5ca13171dc61e8b490ed1c99f1e2bdf8e4afb8933471afc19203103f65"
+    },
+    {
+      "path": "final/reports/logistic_coefficients.csv",
+      "bytes": 1547,
+      "sha256": "15056e83ce9693621e328a1aac542edbd12f5a6dc5d42193f9cc48bf3b8f99f9"
+    },
+    {
+      "path": "final/reports/model_metrics.csv",
+      "bytes": 1609,
+      "sha256": "b6fa84b76aefd4150da7ffbf273be504e86c5583d608ab649b40382916ed3b3d"
+    },
+    {
+      "path": "final/reports/pr_curves.json",
+      "bytes": 526749,
+      "sha256": "9ee63cd23d07a3b1b3a002773df535089f08d10a58fecf5bc637ddee4685e18f"
+    },
+    {
+      "path": "final/reports/quarantine.csv",
+      "bytes": 2103,
+      "sha256": "9a9008fe4521eda8cbc15bc1473c781a28248e1ad88559da1f70b79bf2c3d86a"
+    },
+    {
+      "path": "final/reports/reconciliation.json",
+      "bytes": 854,
+      "sha256": "304ee6c52a70b5fba7974b339363e5fb7f4c5ce3941bee0fdc88202caf3952be"
+    },
+    {
+      "path": "final/reports/results.json",
+      "bytes": 11571,
+      "sha256": "527ab1311988e05efe6063be4d622844d27c854021e92de416e3f6871b35182e"
+    },
+    {
+      "path": "final/reports/rf_permutation_importance.csv",
+      "bytes": 908,
+      "sha256": "ec36c8c97a6a1950c3b2a09ddbe92aeb5a00b3745e4e10ab5db3f64c99ebea97"
+    },
+    {
+      "path": "final/reports/training_monthly_profile.csv",
+      "bytes": 283,
+      "sha256": "31ba32d488df1ee80402bfa03a78cc3ed7cc6f1b09c4697b2f65f196064bf60a"
+    },
+    {
+      "path": "final/reports/training_peer_profile.csv",
+      "bytes": 9803,
+      "sha256": "d86277ebcf8f8a648f186b0327e0ac06aae468f043bd8af6e9ce378d7f8d62cd"
+    },
+    {
+      "path": "final/reports/training_profile.json",
+      "bytes": 382,
+      "sha256": "e6ab133fc74b04da83aba22b6a5f3d5a18908f5aa257985f4a2fc8eb89b7bc18"
+    },
+    {
+      "path": "final/requirements-notebook.txt",
+      "bytes": 53,
+      "sha256": "5408a039c7c41f69c784fc45272844b8f48d76f423f09251c567906a8155f62d"
+    },
+    {
+      "path": "final/requirements.txt",
+      "bytes": 144,
+      "sha256": "168b60501d1d32dab035dad70f6432dc5a5c05874b618a39768b4344b6771e48"
+    },
+    {
+      "path": "final/tools/build_graph_outputs.py",
+      "bytes": 3628,
+      "sha256": "d84c15e5b86180dff1846a2ca75aac6e0247e0d1a05fd1c4a14aa54f32551ec1"
+    },
+    {
+      "path": "final/tools/graph_analysis.py",
+      "bytes": 9974,
+      "sha256": "4b0c21d791501c9a599740251ea68dbdba0ce4558b163a754f8d6f4ef585cda7"
+    },
+    {
+      "path": "final/tools/project_core.py",
+      "bytes": 25763,
+      "sha256": "2cb56bc208b171eece5a80d82c76da70fa1c1cd85d1e0db262bc3f07e8f9eec8"
+    },
+    {
+      "path": "final/tools/render_figures.py",
+      "bytes": 2987,
+      "sha256": "d1f2650b16fbc67a1a6ae7144617d7355f574793d938cb26cb66b5a1cd095323"
+    },
+    {
+      "path": "midterm/README.md",
+      "bytes": 3480,
+      "sha256": "3a89ba0971cdb77f3f612ba513a3c96c027c3696dba0ca817cca517692361ee2"
+    },
+    {
+      "path": "midterm/case_config.json",
+      "bytes": 848,
+      "sha256": "b43c3721e282a78a256561b4f1c8ce977b106cbec7e4491d7627798f435ade2c"
+    },
+    {
+      "path": "midterm/data/employees.csv",
+      "bytes": 1490,
+      "sha256": "ea722815be93fab92d47a0c83cf4621728ce81790b7a7c8aae37316e837023e3"
+    },
+    {
+      "path": "midterm/data/expense_claims.csv",
+      "bytes": 26648,
+      "sha256": "5249298535036c3b41a45a343fff338643ea15e0ba0b0caa26cbcbe53b49abf6"
+    },
+    {
+      "path": "midterm/data/merchants.csv",
+      "bytes": 2178,
+      "sha256": "abf14faf1bb20d6df0b4bd10c73426793ab3a0f9326da952e772f8cdb10530f3"
+    },
+    {
+      "path": "midterm/package.json",
+      "bytes": 338,
+      "sha256": "c1b34295089b2291f2938ea3908f7bce12a25aac55660e044da6b6399b27ed5c"
+    },
+    {
+      "path": "midterm/results/findings.json",
+      "bytes": 40612,
+      "sha256": "7d2d562edec4bc78ab1ba96adf7fce41cafc60d5bb2b47f7f0d9c260fb97114a"
+    },
+    {
+      "path": "midterm/tools/pipeline.test.mjs",
+      "bytes": 6243,
+      "sha256": "faf985cc42e353fde858d653d68d40f9c450b008b405f7ecf8bc374c75b353cb"
+    },
+    {
+      "path": "midterm/tools/pipeline_core.mjs",
+      "bytes": 13344,
+      "sha256": "c92e81fc5707f041807d1b96ed2e09e48332f58d4c64ed4863555cc552ea514f"
+    },
+    {
+      "path": "midterm/tools/run_analysis.mjs",
+      "bytes": 4406,
+      "sha256": "408858700a2f21ccbc6b2c124818a7de067cc3644d378e567e9ba8c7a1f5f47c"
+    },
+    {
+      "path": "midterm/workflow/ITCY514_Midterm_Expense_Fraud_Gemini_AI_n8n.json",
+      "bytes": 89303,
+      "sha256": "b377bbfcf11fc99a27728280b9ff2e5024bfb32ae82024d26d0d22f27ad7084c"
+    },
+    {
+      "path": "midterm/workflow/ITCY514_Midterm_Expense_Fraud_n8n.json",
+      "bytes": 70069,
+      "sha256": "1239a9457bbadede3429ff984f8526cca5c93319f7737407a2f783c72ca56fcd"
+    }
+  ]
+}
